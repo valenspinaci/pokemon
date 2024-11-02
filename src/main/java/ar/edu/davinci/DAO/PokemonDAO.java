@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface PokemonDAO {
     //CREATE
-    void create(Pokemon pokemon);
+    Pokemon create(Pokemon pokemon);
 
     //READ
     List<Pokemon> getAll();
 
     //UPDATE
-    void update(Pokemon pokemon);
+    Pokemon update(Pokemon pokemon, int id);
 
     //DELETE
     void delete(Pokemon pokemon);

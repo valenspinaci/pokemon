@@ -8,7 +8,6 @@ import java.util.List;
 public interface EntrenadorDAO {
     //CREATE
     void create(Entrenador entrenador);
-    void addPokemon(Pokemon pokemon);
 
     //READ
     List<Entrenador> getAll();
