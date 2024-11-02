@@ -54,6 +54,32 @@ public class PokemonDAOImplH2 implements PokemonDAO {
         return pokemon;
     };
 
+    public Pokemon getPokemonById(int id){
+        Pokemon pokemon = null;
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()) {
+                int identificador = rs.getInt("id");
+                String tipo = rs.getString("tipo");
+                String especie = rs.getString("especie");
+                int poder = rs.getInt("poder");
+                int energia = rs.getInt("energia");
+                int vida = rs.getInt("vida");
+                pokemon = new Pokemon(tipo, especie, poder, energia);
+                pokemon.setId(identificador);
+            }
+            rs.close();
+            pstmt.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return pokemon;
+    }
+
+
     public List<Pokemon> getAll(){
         List<Pokemon> pokemons = new ArrayList<Pokemon>();
         String sql = ("SELECT * FROM " + TABLE_NAME + " ORDER BY id ASC");
@@ -108,7 +134,6 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             pstmt.executeUpdate();
             pstmt.close();
         }catch (SQLException e){
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }

@@ -7,13 +7,14 @@ import java.util.List;
 
 public interface EntrenadorDAO {
     //CREATE
-    void create(Entrenador entrenador);
+    Entrenador create(Entrenador entrenador);
 
     //READ
+    Entrenador getEntrenadorById(int id);
     List<Entrenador> getAll();
 
     //UPDATE
-    void update(Entrenador entrenador);
+    Entrenador update(Entrenador entrenador, int id);
 
     //DELETE
     void delete(Entrenador entrenador);

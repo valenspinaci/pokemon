@@ -10,6 +10,7 @@ public interface PokemonDAO {
     Pokemon create(Pokemon pokemon);
 
     //READ
+    Pokemon getPokemonById(int id);
     List<Pokemon> getAll();
 
     //UPDATE

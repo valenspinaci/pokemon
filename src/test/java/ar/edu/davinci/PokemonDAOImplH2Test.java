@@ -35,6 +35,24 @@ public class PokemonDAOImplH2Test {
     };
 
     @Test
+    @DisplayName("Verifico si el método para devolver un Pokémon por el ID lo hace de forma correcta")
+    public void testParaDevolverQueSePuedeDevolverUnPokemonPorId() {
+        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
+        Pokemon pokemon = new Pokemon("Fuego", "Charizard", 20, 70);
+
+        Pokemon creado = conexion.create(pokemon);
+
+        Pokemon resultado = conexion.getPokemonById(creado.getId());
+
+        assertEquals(creado.getTipo(), resultado.getTipo());
+        assertEquals(creado.getEspecie(), resultado.getEspecie());
+        assertEquals(creado.getPoder(), resultado.getPoder());
+        assertEquals(creado.getEnergia(), resultado.getEnergia());
+        assertEquals(creado.getVida(), resultado.getVida());
+        assertEquals(creado.getId(), resultado.getId());
+    }
+
+    @Test
     @DisplayName("Cuando uso el metodo para ver el listado de pokemones me devuelve todos los creados con sus respectivos detalles")
     public void testParaVerificarQueSeMuestranTodosLosPokemones(){
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
@@ -62,14 +80,21 @@ public class PokemonDAOImplH2Test {
 
     @Test
     @DisplayName("Cuando actualizo un pokemon se guarda de forma exitosa con los datos que le pase")
-    public void testParaVerificarQueSePuedenActualizarLosPokemonesDeFormaExitosa(){
+    public void testParaVerificarQueSePuedenActualizarLosPokemonesDeFormaExitosa() {
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Pokemon pokemon = new Pokemon("Fuego", "Charizard", 20, 70);
-        Pokemon pokemonAActualizar = conexion.create(pokemon);
-        Pokemon pokemonActualizado = conexion.update(pokemon, 0);
 
-        assertEquals(pokemon, pokemonActualizado);
+        Pokemon pokemon = new Pokemon("Fuego", "Charizard", 20, 70);
+        Pokemon pokemonCreado = conexion.create(pokemon);
+
+        Pokemon actualizacion = new Pokemon("Agua", "Squirtle", 30, 60);
+        Pokemon pokemonActualizado = conexion.update(actualizacion, pokemonCreado.getId());
+
+        assertEquals(actualizacion.getTipo(), pokemonActualizado.getTipo());
+        assertEquals(actualizacion.getEspecie(), pokemonActualizado.getEspecie());
+        assertEquals(actualizacion.getPoder(), pokemonActualizado.getPoder());
+        assertEquals(actualizacion.getEnergia(), pokemonActualizado.getEnergia());
     }
+
 
     @Test
     @DisplayName("Cuando agrego un único Pokémon a la lista y luego lo elimino, el largo de la misma es 0")
