@@ -1,14 +1,11 @@
 package ar.edu.davinci;
 
-import ar.edu.davinci.DAO.EntrenadorDAOImplH2;
-import ar.edu.davinci.DAO.PokemonDAOImplH2;
+import ar.edu.davinci.DAO.implementacion.EntrenadorDAOImplH2;
 import ar.edu.davinci.models.Entrenador;
-import ar.edu.davinci.models.Pokemon;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

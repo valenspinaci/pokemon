@@ -1,6 +1,8 @@
-package ar.edu.davinci.DAO;
+package ar.edu.davinci.DAO.implementacion;
 
+import ar.edu.davinci.DAO.PokemonDAO;
 import ar.edu.davinci.models.Pokemon;
+import ar.edu.davinci.models.Tipo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    "(id INT AUTO_INCREMENT PRIMARY KEY, tipo VARCHAR(60), especie VARCHAR(60), poder int, energia int, vida int)";
+                    "(id INT AUTO_INCREMENT PRIMARY KEY, tipo VARCHAR(60), especie VARCHAR(60), poder int, energia int, vida int, danio int)";
             statement.executeUpdate(sql);
             statement.close();
         }catch (SQLException e){
@@ -27,14 +29,15 @@ public class PokemonDAOImplH2 implements PokemonDAO {
     }
 
     public Pokemon create(Pokemon pokemon){
-        String sql = ("INSERT INTO " + TABLE_NAME + "(tipo, especie, poder, energia, vida) VALUES (?, ?, ?, ?, ?)");
+        String sql = ("INSERT INTO " + TABLE_NAME + "(tipo, especie, poder, energia, vida, danio) VALUES (?, ?, ?, ?, ?, ?)");
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, pokemon.getTipo());
+            pstmt.setString(1, pokemon.getTipo().getNombre());
             pstmt.setString(2, pokemon.getEspecie());
             pstmt.setInt(3, pokemon.getPoder());
             pstmt.setInt(4, pokemon.getEnergia());
             pstmt.setInt(5, pokemon.getVida());
+            pstmt.setInt(6, pokemon.getDanio());
 
             pstmt.executeUpdate();
 
@@ -63,12 +66,14 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
                 int identificador = rs.getInt("id");
-                String tipo = rs.getString("tipo");
+                String tipoNombre = rs.getString("tipo");
                 String especie = rs.getString("especie");
                 int poder = rs.getInt("poder");
                 int energia = rs.getInt("energia");
                 int vida = rs.getInt("vida");
-                pokemon = new Pokemon(tipo, especie, poder, energia);
+                int danio = rs.getInt("danio");
+                Tipo tipo = Tipo.crearTipoPorNombre(tipoNombre);
+                pokemon = new Pokemon(tipo, especie, poder, energia, danio);
                 pokemon.setId(identificador);
             }
             rs.close();
@@ -88,12 +93,14 @@ public class PokemonDAOImplH2 implements PokemonDAO {
         ResultSet resultSet = statement.executeQuery(sql);
         while (resultSet.next()){
             int id = resultSet.getInt("id");
-            String tipo = resultSet.getString("tipo");
+            String tipoNombre = resultSet.getString("tipo");
             String especie = resultSet.getString("especie");
             int poder = resultSet.getInt("poder");
             int energia = resultSet.getInt("energia");
             int vida = resultSet.getInt("vida");
-            Pokemon pokemon = new Pokemon(tipo, especie, poder, energia);
+            int danio = resultSet.getInt("danio");
+            Tipo tipo = Tipo.crearTipoPorNombre(tipoNombre);
+            Pokemon pokemon = new Pokemon(tipo, especie, poder, energia, danio);
             pokemon.setId(id);
             pokemons.add(pokemon);
         }
@@ -106,16 +113,17 @@ public class PokemonDAOImplH2 implements PokemonDAO {
     };
 
     public Pokemon update(Pokemon pokemon, int id){
-        String sql = ("UPDATE " + TABLE_NAME + " SET tipo = ?, especie = ?, poder = ?, energia = ?, vida = ? WHERE id = ?");
+        String sql = ("UPDATE " + TABLE_NAME + " SET tipo = ?, especie = ?, poder = ?, energia = ?, vida = ?, danio = ? WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, pokemon.getTipo());
+            pstmt.setString(1, pokemon.getTipo().getNombre());
             pstmt.setString(2, pokemon.getEspecie());
             pstmt.setInt(3, pokemon.getPoder());
             pstmt.setInt(4, pokemon.getEnergia());
             pstmt.setInt(5, pokemon.getVida());
-            pstmt.setInt(6, id);
+            pstmt.setInt(6, pokemon.getDanio());
+            pstmt.setInt(7, id);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {

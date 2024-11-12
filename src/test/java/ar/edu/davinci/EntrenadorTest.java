@@ -2,6 +2,9 @@ package ar.edu.davinci;
 
 import ar.edu.davinci.models.Entrenador;
 import ar.edu.davinci.models.Pokemon;
+import ar.edu.davinci.models.Tipo;
+import ar.edu.davinci.models.tipos.Agua;
+import ar.edu.davinci.models.tipos.Fuego;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -16,7 +19,8 @@ public class EntrenadorTest {
     @DisplayName("Cuando un entrenador captura un pokemon, el largo de la lista de pokemones pasa a ser 1")
     public void testCuandoUnEntrenadorCapturaUnPokemonLaListaPasaATenerUnLargoDeUno() {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
-        Pokemon pokemon = new Pokemon("Agua", "Squirtle", 20, 50);
+        Tipo tipo = new Fuego();
+        Pokemon pokemon = new Pokemon(tipo, "Squirtle", 20, 50, 40);
 
         entrenador.capturarPokemon(pokemon);
 
@@ -27,8 +31,10 @@ public class EntrenadorTest {
     @DisplayName("Cuando un entrenador captura dos pokemones, el largo de la lista de pokemones pasa a ser 2")
     public void testCuandoUnEntrenadorCapturaDosPokemonesLaListaPasaATenerUnLargoDeDos() {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
-        Pokemon pokemon = new Pokemon("Agua", "Squirtle", 20, 50);
-        Pokemon pokemon2 = new Pokemon("Fuego", "Charmander", 25, 50);
+        Tipo fuego = new Fuego();
+        Tipo agua = new Agua();
+        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20, 50, 25);
+        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25, 50, 40);
 
         entrenador.capturarPokemon(pokemon);
         entrenador.capturarPokemon(pokemon2);
@@ -40,9 +46,10 @@ public class EntrenadorTest {
     @DisplayName("Cuando un entrenador intenta capturar mas de 5 pokemones, el largo de la lista es cinco")
     public void testCuandoUnEntrenadorCapturaMasDeCincoPokemonesLaListaSigueTeniendoUnLargoDeCinco() {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
+        Tipo tipo = new Agua();
 
         for (int i = 0; i <= 10; i++) {
-            entrenador.capturarPokemon(new Pokemon("Agua", "Squirtle" + i, 20, 50));
+            entrenador.capturarPokemon(new Pokemon(tipo, "Squirtle" + i, 20, 50, 25));
         }
 
         assertEquals(5, entrenador.getPokemons().size());
@@ -53,8 +60,10 @@ public class EntrenadorTest {
     public void testCuandoSeEnfrentanDosEntrenadoresSusPokemonesPierdenVida(){
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
         Entrenador entrenador2 = new Entrenador("Misty", new Date(), "Kanto", "Femenino", 10);
-        Pokemon pokemon = new Pokemon("Agua", "Squirtle", 20, 50);
-        Pokemon pokemon2 = new Pokemon("Fuego", "Charmander", 25, 50);
+        Tipo agua = new Agua();
+        Tipo fuego = new Fuego();
+        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20, 50, 25);
+        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25, 50, 40);
 
         entrenador.capturarPokemon(pokemon);
         entrenador2.capturarPokemon(pokemon2);

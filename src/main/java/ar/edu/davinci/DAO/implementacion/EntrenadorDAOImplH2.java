@@ -1,7 +1,7 @@
-package ar.edu.davinci.DAO;
+package ar.edu.davinci.DAO.implementacion;
 
+import ar.edu.davinci.DAO.EntrenadorDAO;
 import ar.edu.davinci.models.Entrenador;
-import ar.edu.davinci.models.Pokemon;
 
 import java.sql.*;
 import java.util.ArrayList;
