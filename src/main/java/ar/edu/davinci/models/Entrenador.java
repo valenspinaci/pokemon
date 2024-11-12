@@ -80,13 +80,13 @@ public class Entrenador {
     public void enfrentarseA(Entrenador otroEntrenador) {
         System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
 
-        List<Pokemon> misPokemones = this.pokemons;
-        List<Pokemon> susPokemones = otroEntrenador.getPokemons();
+        int miIndice = 0;
+        int suIndice = 0;
 
-        //Comienza la pelea
-        for (int i = 0; i < Math.min(misPokemones.size(), susPokemones.size()); i++) {
-            Pokemon miPokemon = misPokemones.get(i);
-            Pokemon suPokemon = susPokemones.get(i);
+        //Pelean mientras ambos entrenadores tengan pokemones vivos
+        while (miIndice < this.pokemons.size() && suIndice < otroEntrenador.getPokemons().size()) {
+            Pokemon miPokemon = this.pokemons.get(miIndice);
+            Pokemon suPokemon = otroEntrenador.getPokemons().get(suIndice);
 
             System.out.println(miPokemon.getEspecie() + " de " + this.nombre + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre());
 
@@ -110,18 +110,22 @@ public class Entrenador {
                     break;
                 }
             }
+
+            //Si el Pokémon mio pierde, paso al siguiente pokemon
+            if (miPokemon.getVida() <= 0) {
+                miIndice++;
+            }
+
+            //Si el pokemon de mi oponente fue derrotado, paso al siguiente pokemon
+            if (suPokemon.getVida() <= 0) {
+                suIndice++;
+            }
         }
 
-        //Determina el ganador basado en quién tiene pokemones restantes
-        boolean tengoPokemonesVivos = misPokemones.stream().anyMatch(p -> p.getVida() > 0);
-        boolean susPokemonesVivos = susPokemones.stream().anyMatch(p -> p.getVida() > 0);
-
-        if (tengoPokemonesVivos && !susPokemonesVivos) {
-            System.out.println(this.nombre + " gana el enfrentamiento!");
-        } else if (!tengoPokemonesVivos && susPokemonesVivos) {
-            System.out.println(otroEntrenador.getNombre() + " gana el enfrentamiento!");
-        } else {
-            System.out.println("El enfrentamiento termina en empate, ambos entrenadores han perdido todos sus Pokemones");
+        if (miIndice < this.pokemons.size()) {
+            System.out.println(this.nombre + " gana la pelea!");
+        } else{
+            System.out.println(otroEntrenador.getNombre() + " gana la pelea!");
         }
     }
 
@@ -140,7 +144,7 @@ public class Entrenador {
             this.pokemons.add(pokemon);
 
         } catch (CapturarPokemonException e) {
-            System.out.println("Error al capturar Pokémon: " + e.getMessage());
+            System.out.println("Error al capturar Pokemon: " + e.getMessage());
         }
     }
 }

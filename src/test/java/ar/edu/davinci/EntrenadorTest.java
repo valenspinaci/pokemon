@@ -16,19 +16,20 @@ import static org.junit.Assert.assertTrue;
 public class EntrenadorTest {
 
     @Test
-    @DisplayName("Cuando un entrenador captura un pokemon, el largo de la lista de pokemones pasa a ser 1")
+    @DisplayName("Cuando un entrenador captura un pokemon que cuenta con vida 0, el largo de la lista de pokemones pasa a ser 1")
     public void testCuandoUnEntrenadorCapturaUnPokemonLaListaPasaATenerUnLargoDeUno() {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
         Tipo tipo = new Fuego();
         Pokemon pokemon = new Pokemon(tipo, "Squirtle", 20, 50, 40);
 
+        pokemon.restarVida(100);
         entrenador.capturarPokemon(pokemon);
 
         assertEquals(1, entrenador.getPokemons().size());
     }
 
     @Test
-    @DisplayName("Cuando un entrenador captura dos pokemones, el largo de la lista de pokemones pasa a ser 2")
+    @DisplayName("Cuando un entrenador captura dos pokemones y estos no tienen 0 de vida, el largo de la lista de pokemones sigue siendo 0")
     public void testCuandoUnEntrenadorCapturaDosPokemonesLaListaPasaATenerUnLargoDeDos() {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
         Tipo fuego = new Fuego();
@@ -39,7 +40,7 @@ public class EntrenadorTest {
         entrenador.capturarPokemon(pokemon);
         entrenador.capturarPokemon(pokemon2);
 
-        assertEquals(2, entrenador.getPokemons().size());
+        assertEquals(0, entrenador.getPokemons().size());
     }
 
     @Test
@@ -64,9 +65,6 @@ public class EntrenadorTest {
         Tipo fuego = new Fuego();
         Pokemon pokemon = new Pokemon(agua, "Squirtle", 20, 50, 25);
         Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25, 50, 40);
-
-        entrenador.capturarPokemon(pokemon);
-        entrenador2.capturarPokemon(pokemon2);
 
         entrenador.enfrentarseA(entrenador2);
 
