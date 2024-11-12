@@ -1,5 +1,7 @@
 package ar.edu.davinci.models;
 
+import ar.edu.davinci.exceptions.CapturarPokemonException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,9 +125,22 @@ public class Entrenador {
         }
     }
 
-    public void capturarPokemon(Pokemon pokemon){
-        if (pokemon != null && pokemons.size() < 5) {
+    public void capturarPokemon(Pokemon pokemon) {
+        try {
+            if (pokemon == null) {
+                throw new CapturarPokemonException("El Pokemon no existe");
+            }
+            if (pokemon.getVida() > 0) {
+                throw new CapturarPokemonException("El Pokemon debe tener vida igual a 0 para ser capturado");
+            }
+            if (pokemons.size() >= 5) {
+                throw new CapturarPokemonException("No podes capturar más de 5 Pokemones");
+            }
+
             this.pokemons.add(pokemon);
+
+        } catch (CapturarPokemonException e) {
+            System.out.println("Error al capturar Pokémon: " + e.getMessage());
         }
     }
 }
