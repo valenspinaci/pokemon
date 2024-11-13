@@ -1,5 +1,6 @@
 package ar.edu.davinci.models;
 
+import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
 
 import java.util.ArrayList;
@@ -53,6 +54,10 @@ public class Entrenador {
         return pokemons;
     }
 
+    public int cantPokemons() {
+        return pokemons.size();
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -77,14 +82,15 @@ public class Entrenador {
         this.edad = edad;
     }
 
-    public void enfrentarseA(Entrenador otroEntrenador) {
+    public void enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {
         System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
 
         int miIndice = 0;
         int suIndice = 0;
+        Arbitro arbitro = new Arbitro();
 
         //Pelean mientras ambos entrenadores tengan pokemones vivos
-        while (miIndice < this.pokemons.size() && suIndice < otroEntrenador.getPokemons().size()) {
+        while (miIndice < this.cantPokemons() && suIndice < otroEntrenador.cantPokemons()) {
             Pokemon miPokemon = this.pokemons.get(miIndice);
             Pokemon suPokemon = otroEntrenador.getPokemons().get(suIndice);
 
@@ -92,59 +98,28 @@ public class Entrenador {
 
             //Pelean hasta que uno de los pokemones se queda sin vida
             while (miPokemon.getVida() > 0 && suPokemon.getVida() > 0) {
-                //Mi Pokemon ataca
                 miPokemon.atacar(suPokemon);
-                System.out.println(miPokemon.getEspecie() + " ataca! " + suPokemon.getEspecie() + " queda con " + suPokemon.getVida() + " vida.");
-
-                if (suPokemon.getVida() <= 0) {
-                    System.out.println(suPokemon.getEspecie() + " ha sido derrotado!");
-                    break;
-                }
-
-                //Su Pokemon ataca
-                suPokemon.atacar(miPokemon);
-                System.out.println(suPokemon.getEspecie() + " ataca! " + miPokemon.getEspecie() + " queda con " + miPokemon.getVida() + " vida.");
-
-                if (miPokemon.getVida() <= 0) {
-                    System.out.println(miPokemon.getEspecie() + " ha sido derrotado!");
-                    break;
-                }
             }
 
             //Si el Pokémon mio pierde, paso al siguiente pokemon
             if (miPokemon.getVida() <= 0) {
                 miIndice++;
             }
-
             //Si el pokemon de mi oponente fue derrotado, paso al siguiente pokemon
             if (suPokemon.getVida() <= 0) {
                 suIndice++;
             }
         }
 
-        if (miIndice < this.pokemons.size()) {
-            System.out.println(this.nombre + " gana la pelea!");
-        } else{
-            System.out.println(otroEntrenador.getNombre() + " gana la pelea!");
-        }
+        //Verificar ganador
+        arbitro.verificarGanador(this, otroEntrenador, miIndice);
     }
 
-    public void capturarPokemon(Pokemon pokemon) {
-        try {
-            if (pokemon == null) {
-                throw new CapturarPokemonException("El Pokemon no existe");
-            }
-            if (pokemon.getVida() > 0) {
-                throw new CapturarPokemonException("El Pokemon debe tener vida igual a 0 para ser capturado");
-            }
-            if (pokemons.size() >= 5) {
-                throw new CapturarPokemonException("No podes capturar más de 5 Pokemones");
-            }
-
+    public void capturarPokemon(Pokemon pokemon) throws CapturarPokemonException {
+        if (pokemons.size() >= 5) {
+            throw new CapturarPokemonException("No podes capturar más de 5 Pokemones");
+        }else{
             this.pokemons.add(pokemon);
-
-        } catch (CapturarPokemonException e) {
-            System.out.println("Error al capturar Pokemon: " + e.getMessage());
         }
     }
 }

@@ -1,8 +1,6 @@
-package ar.edu.davinci.models;
+package ar.edu.davinci.models.tipos;
 
-import ar.edu.davinci.models.tipos.Agua;
-import ar.edu.davinci.models.tipos.Electrico;
-import ar.edu.davinci.models.tipos.Fuego;
+import ar.edu.davinci.models.Pokemon;
 
 public abstract class Tipo {
     private String nombre;

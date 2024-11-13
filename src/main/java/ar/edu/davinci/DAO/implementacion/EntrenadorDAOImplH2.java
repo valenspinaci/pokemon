@@ -1,6 +1,6 @@
 package ar.edu.davinci.DAO.implementacion;
 
-import ar.edu.davinci.DAO.EntrenadorDAO;
+import ar.edu.davinci.DAO.interfaces.EntrenadorDAO;
 import ar.edu.davinci.models.Entrenador;
 
 import java.sql.*;

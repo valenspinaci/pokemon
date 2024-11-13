@@ -1,7 +1,6 @@
-package ar.edu.davinci.DAO;
+package ar.edu.davinci.DAO.interfaces;
 
 import ar.edu.davinci.models.Entrenador;
-import ar.edu.davinci.models.Pokemon;
 
 import java.util.List;
 

@@ -1,7 +1,8 @@
 package ar.edu.davinci;
 
+import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.models.Pokemon;
-import ar.edu.davinci.models.Tipo;
+import ar.edu.davinci.models.tipos.Tipo;
 import ar.edu.davinci.models.tipos.Agua;
 import ar.edu.davinci.models.tipos.Fuego;
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class PokemonTest {
 
     @Test
     @DisplayName("Controlar que cuando un pokemon ataca se le resta energia al mismo y vida al oponente")
-    public void testParaVerificarEficienciaDeAtaque(){
+    public void testParaVerificarEficienciaDeAtaque() throws AtaqueException {
         Tipo fuego = new Fuego();
         Tipo agua = new Agua();
         Pokemon pokemon = new Pokemon(fuego, "Charizard", 20, 70, 40);

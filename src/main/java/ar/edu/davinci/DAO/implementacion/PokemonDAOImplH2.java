@@ -1,8 +1,8 @@
 package ar.edu.davinci.DAO.implementacion;
 
-import ar.edu.davinci.DAO.PokemonDAO;
+import ar.edu.davinci.DAO.interfaces.PokemonDAO;
 import ar.edu.davinci.models.Pokemon;
-import ar.edu.davinci.models.Tipo;
+import ar.edu.davinci.models.tipos.Tipo;
 
 import java.sql.*;
 import java.util.ArrayList;

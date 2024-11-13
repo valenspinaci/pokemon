@@ -1,5 +1,8 @@
 package ar.edu.davinci.models;
 
+import ar.edu.davinci.exceptions.AtaqueException;
+import ar.edu.davinci.models.tipos.Tipo;
+
 public class Pokemon {
     private int id;
     private Tipo tipo;
@@ -75,13 +78,25 @@ public class Pokemon {
         this.danio = danio;
     }
 
-    public void atacar(Pokemon otroPokemon){
-        if (this.energia >= 10) {
+    public void atacar(Pokemon otroPokemon) throws AtaqueException {
+        if(this.getVida()<=0){
+            System.out.println(otroPokemon.getEspecie() + " ha sido derrotado!");
+            throw new AtaqueException("El pokemon no tiene vida para atacar");
+        }else{
             otroPokemon.restarVida(this.tipo.danio(this, otroPokemon));
             this.energia -= 10;
-        } else {
-            System.out.println(this.especie + " no tiene suficiente energía para atacar.");
+            System.out.println(this.getEspecie() + " ataca! " + otroPokemon.getEspecie() + " queda con " + this.getVida() + " vida.");
         }
+
+        if(otroPokemon.getVida()<=0){
+            System.out.println(this.getEspecie() + " ha sido derrotado!");
+            throw new AtaqueException("El pokemon no tiene vida para atacar");
+        }else{
+            this.restarVida(otroPokemon.tipo.danio(otroPokemon, this));
+            this.energia -= 10;
+            System.out.println(otroPokemon.getEspecie() + " ataca! " + this.getEspecie() + " queda con " + otroPokemon.getVida() + " vida.");
+        }
+
     }
 
     public void restarVida(int cantidad){

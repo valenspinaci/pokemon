@@ -2,7 +2,7 @@ package ar.edu.davinci;
 
 import ar.edu.davinci.DAO.implementacion.PokemonDAOImplH2;
 import ar.edu.davinci.models.Pokemon;
-import ar.edu.davinci.models.Tipo;
+import ar.edu.davinci.models.tipos.Tipo;
 import ar.edu.davinci.models.tipos.Agua;
 import ar.edu.davinci.models.tipos.Fuego;
 import org.junit.Test;
