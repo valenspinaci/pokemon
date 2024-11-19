@@ -8,12 +8,12 @@ public class Planta extends Tipo {
     }
 
     @Override
-    public int danio(Pokemon atacante, Pokemon defensor) {
+    public Float danio(Pokemon atacante, Pokemon defensor) {
         return defensor.serAtacadoPorPlanta(atacante);
     }
 
     @Override
-    public int serAtacadoPorFuego(Pokemon atacante) {
-        return (int) (atacante.getPoder()*1.2);
+    public Float serAtacadoPorFuego(Pokemon atacante) {
+        return atacante.getPoder()*1.2F;
     }
 }

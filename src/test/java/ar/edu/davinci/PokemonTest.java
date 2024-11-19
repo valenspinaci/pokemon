@@ -15,26 +15,26 @@ public class PokemonTest {
     @DisplayName("Un pokemon resta su vida 50 puntos y pasa a contar con 50 puntos de vida")
     public void testParaVerificarElRestoDeVida(){
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
-        pokemon.restarVida(50);
+        pokemon.restarVida(50F);
 
-        int resultado = pokemon.getVida();
+        Float resultado = pokemon.getVida();
 
-        assertEquals(50, resultado);
+        assertEquals(50, resultado, 0);
     }
 
     @Test
     @DisplayName("Un pokemon resta su vida 120 puntos y pasa a contar con 0 puntos de vida")
     public void testParaVerificarElRestoExcesivoDeVida(){
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
-        pokemon.restarVida(120);
+        pokemon.restarVida(120F);
 
-        int resultado = pokemon.getVida();
+        Float resultado = pokemon.getVida();
 
-        assertEquals(0, resultado);
+        assertEquals(0, resultado, 0);
     }
 
     @Test
@@ -42,39 +42,39 @@ public class PokemonTest {
     public void testParaVerificarEficienciaDeAtaque() throws AtaqueException {
         Tipo fuego = new Fuego();
         Tipo agua = new Agua();
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20, 70, 40);
-        Pokemon oponente = new Pokemon(agua, "Squirtle", 15, 80, 25);
+        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
+        Pokemon oponente = new Pokemon(agua, "Squirtle", 15F, 80F, 25F);
 
         pokemon.atacar(oponente);
 
-        assertEquals(60, pokemon.getEnergia());
-        assertEquals(60, oponente.getVida());
+        assertEquals(50, pokemon.getEnergia(), 0);
+        assertEquals(60, oponente.getVida(), 0);
     }
 
     @Test
     @DisplayName("Un pokemon aumenta su vida 50 puntos y sigue contando con 100 puntos")
     public void testParaVerificarElAumentoExcesivoDeVida(){
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
-        pokemon.aumentarVida(50);
+        pokemon.aumentarVida(50F);
 
-        int resultado = pokemon.getVida();
+        Float resultado = pokemon.getVida();
 
-        assertEquals(100, resultado);
+        assertEquals(100, resultado, 0);
     }
 
     @Test
     @DisplayName("Un pokemon resta su vida 30 puntos, aumenta en 10 y pasa a contar con 80 puntos de vida")
     public void testParaVerificarElAumentoDeVida(){
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
-        pokemon.restarVida(30);
-        pokemon.aumentarVida(10);
+        pokemon.restarVida(30F);
+        pokemon.aumentarVida(10F);
 
-        int resultado = pokemon.getVida();
+        Float resultado = pokemon.getVida();
 
-        assertEquals(80, resultado);
+        assertEquals(80, resultado, 0);
     }
 }

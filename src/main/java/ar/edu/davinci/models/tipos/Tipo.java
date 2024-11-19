@@ -24,25 +24,25 @@ public abstract class Tipo {
     }
 
     //Daño por defecto
-    public abstract int danio(Pokemon atacante, Pokemon defensor);
+    public abstract Float danio(Pokemon atacante, Pokemon defensor);
 
-    public int serAtacadoPorAgua(Pokemon atacante){
+        public Float serAtacadoPorAgua(Pokemon atacante){
         return atacante.getDanio();
     };
 
-    public int serAtacadoPorFuego(Pokemon atacante){
+    public Float serAtacadoPorFuego(Pokemon atacante){
         return atacante.getDanio();
     };
 
-    public int serAtacadoPorElectrico(Pokemon atacante){
+    public Float serAtacadoPorElectrico(Pokemon atacante){
         return atacante.getDanio();
     };
 
-    public int serAtacadoPorPlanta(Pokemon atacante){
+    public Float serAtacadoPorPlanta(Pokemon atacante){
         return atacante.getDanio();
     };
 
-    public int serAtacadoPorPiedra(Pokemon atacante){
+    public Float serAtacadoPorPiedra(Pokemon atacante){
         return atacante.getDanio();
     };
 }

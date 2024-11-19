@@ -8,13 +8,13 @@ public class Piedra extends Tipo {
     }
 
     @Override
-    public int danio(Pokemon atacante, Pokemon defensor) {
+    public Float danio(Pokemon atacante, Pokemon defensor) {
         return defensor.serAtacadoPorPiedra(atacante);
     }
 
     @Override
-    public int serAtacadoPorPlanta(Pokemon atacante) {
-        return 0;
+    public Float serAtacadoPorPlanta(Pokemon atacante) {
+        return 0F;
     }
 
 }

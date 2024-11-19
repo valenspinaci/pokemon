@@ -8,12 +8,12 @@ public class Fuego extends Tipo {
     }
 
     @Override
-    public int danio(Pokemon atacante, Pokemon defensor) {
+    public Float danio(Pokemon atacante, Pokemon defensor) {
         return defensor.serAtacadoPorFuego(atacante);
     }
 
     @Override
-    public int serAtacadoPorAgua(Pokemon atacante) {
-        return (int) (atacante.getPoder()*1.25);
+    public Float serAtacadoPorAgua(Pokemon atacante) {
+        return atacante.getPoder()*1.25F;
     }
 }

@@ -22,9 +22,9 @@ public class EntrenadorTest {
     public void testCuandoUnEntrenadorCapturaUnPokemonLaListaPasaATenerUnLargoDeUno() throws CapturarPokemonException {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Squirtle", 20, 50, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Squirtle", 20F, 50F, 40F);
 
-        pokemon.restarVida(100);
+        pokemon.restarVida(100F);
         entrenador.capturarPokemon(pokemon);
 
         assertEquals(1, entrenador.getPokemons().size());
@@ -36,8 +36,8 @@ public class EntrenadorTest {
         Entrenador entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
         Tipo fuego = new Fuego();
         Tipo agua = new Agua();
-        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20, 50, 25);
-        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25, 50, 40);
+        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20F, 50F, 25F);
+        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25F, 50F, 40F);
 
         entrenador.capturarPokemon(pokemon);
         entrenador.capturarPokemon(pokemon2);
@@ -52,7 +52,7 @@ public class EntrenadorTest {
         Tipo tipo = new Agua();
 
         for (int i = 0; i <= 10; i++) {
-            entrenador.capturarPokemon(new Pokemon(tipo, "Squirtle" + i, 20, 50, 25));
+            entrenador.capturarPokemon(new Pokemon(tipo, "Squirtle" + i, 20F, 50F, 25F));
         }
 
         assertEquals(5, entrenador.getPokemons().size());
@@ -65,8 +65,8 @@ public class EntrenadorTest {
         Entrenador entrenador2 = new Entrenador("Misty", new Date(), "Kanto", "Femenino", 10);
         Tipo agua = new Agua();
         Tipo fuego = new Fuego();
-        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20, 50, 25);
-        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25, 50, 40);
+        Pokemon pokemon = new Pokemon(agua, "Squirtle", 20F, 50F, 25F);
+        Pokemon pokemon2 = new Pokemon(fuego, "Charmander", 25F, 50F, 40F);
 
         entrenador.enfrentarseA(entrenador2);
 

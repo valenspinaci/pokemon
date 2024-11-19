@@ -30,7 +30,7 @@ public class PokemonDAOImplH2Test {
     public void testParaVerificarQueSePuedeAgregarUnPokemon(){
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
         Pokemon resultado = conexion.create(pokemon);
 
@@ -43,7 +43,7 @@ public class PokemonDAOImplH2Test {
     public void testParaDevolverQueSePuedeDevolverUnPokemonPorId() {
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
         Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
 
         Pokemon creado = conexion.create(pokemon);
 
@@ -62,8 +62,8 @@ public class PokemonDAOImplH2Test {
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
         Tipo fuego = new Fuego();
         Tipo agua = new Agua();
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20, 70, 40);
-        Pokemon pokemon2 = new Pokemon(agua, "Squirtle", 30, 60, 25);
+        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
+        Pokemon pokemon2 = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
 
         conexion.create(pokemon);
         conexion.create(pokemon2);
@@ -72,14 +72,14 @@ public class PokemonDAOImplH2Test {
 
         assertEquals(2, resultado.size());
         assertEquals("Charizard", resultado.get(0).getEspecie());
-        assertEquals(20, resultado.get(0).getPoder());
-        assertEquals(70, resultado.get(0).getEnergia());
-        assertEquals(100, resultado.get(0).getVida());
+        assertEquals(20, resultado.get(0).getPoder(),0);
+        assertEquals(70, resultado.get(0).getEnergia(), 0);
+        assertEquals(100, resultado.get(0).getVida(), 0);
 
         assertEquals("Squirtle", resultado.get(1).getEspecie());
-        assertEquals(30, resultado.get(1).getPoder());
-        assertEquals(60, resultado.get(1).getEnergia());
-        assertEquals(100, resultado.get(1).getVida());
+        assertEquals(30, resultado.get(1).getPoder(), 0);
+        assertEquals(60, resultado.get(1).getEnergia(), 0);
+        assertEquals(100, resultado.get(1).getVida(), 0);
     }
 
     @Test
@@ -89,10 +89,10 @@ public class PokemonDAOImplH2Test {
         Tipo fuego = new Fuego();
         Tipo agua = new Agua();
 
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
         Pokemon pokemonCreado = conexion.create(pokemon);
 
-        Pokemon actualizacion = new Pokemon(agua, "Squirtle", 30, 60, 25);
+        Pokemon actualizacion = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
         Pokemon pokemonActualizado = conexion.update(actualizacion, pokemonCreado.getId());
 
         assertEquals(actualizacion.getTipo(), pokemonActualizado.getTipo());
@@ -107,7 +107,7 @@ public class PokemonDAOImplH2Test {
     public void testParaVerificarQueSePuedenEliminarPokemones() {
         PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
         Tipo fuego = new Fuego();
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20, 70, 40);
+        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
         conexion.create(pokemon);
 
         conexion.delete(pokemon);

@@ -7,18 +7,18 @@ public class Pokemon {
     private int id;
     private Tipo tipo;
     private String especie;
-    private int poder;
-    private int energia;
-    private int danio;
-    private int vida;
+    private Float poder;
+    private Float energia;
+    private Float danio;
+    private Float vida;
 
-    public Pokemon(Tipo tipo, String especie, int poder, int energia, int danio) {
+    public Pokemon(Tipo tipo, String especie, Float poder, Float energia, Float danio) {
         this.tipo = tipo;
         this.especie = especie;
         this.poder = poder;
         this.energia = energia;
         this.danio = danio;
-        this.vida = 100;
+        this.vida = 100F;
     }
 
     //Getters & Setters
@@ -34,19 +34,19 @@ public class Pokemon {
         return especie;
     }
 
-    public int getPoder() {
+    public Float getPoder() {
         return poder;
     }
 
-    public int getEnergia() {
+    public Float getEnergia() {
         return energia;
     }
 
-    public int getVida() {
+    public Float getVida() {
         return vida;
     }
 
-    public int getDanio() {
+    public Float getDanio() {
         return danio;
     }
 
@@ -62,19 +62,19 @@ public class Pokemon {
         this.especie = especie;
     }
 
-    public void setPoder(int poder) {
+    public void setPoder(Float poder) {
         this.poder = poder;
     }
 
-    public void setEnergia(int energia) {
+    public void setEnergia(Float energia) {
         this.energia = energia;
     }
 
-    public void setVida(int vida) {
+    public void setVida(Float vida) {
         this.vida = vida;
     }
 
-    public void setDanio(int danio) {
+    public void setDanio(Float danio) {
         this.danio = danio;
     }
 
@@ -99,45 +99,45 @@ public class Pokemon {
 
     }
 
-    public void restarVida(int cantidad){
+    public void restarVida(Float cantidad){
         if (cantidad > 0) {
             this.vida -= cantidad;
             if (this.vida < 0) {
-                this.vida = 0;
+                this.vida = 0F;
             }
         } else {
             System.out.println("La cantidad a restar debe ser mayor que 0.");
         }
     }
 
-    public void aumentarVida(int cantidad){
+    public void aumentarVida(Float cantidad){
         if (cantidad > 0) {
             this.vida += cantidad;
             if (this.vida > 100) {
-                this.vida = 100;
+                this.vida = 100F;
             }
         } else {
-            System.out.println("La cantidad a aumentar debe ser mayor que 0.");
+            System.out.println("La cantidad a aumentar debe ser mayor que 0");
         }
     }
 
-    public int serAtacadoPorAgua(Pokemon atacante) {
+    public Float serAtacadoPorAgua(Pokemon atacante) {
         return this.tipo.serAtacadoPorAgua(atacante);
     }
 
-    public int serAtacadoPorElectrico(Pokemon atacante) {
+    public Float serAtacadoPorElectrico(Pokemon atacante) {
         return this.tipo.serAtacadoPorElectrico(atacante);
     }
 
-    public int serAtacadoPorFuego(Pokemon atacante) {
+    public Float serAtacadoPorFuego(Pokemon atacante) {
         return this.tipo.serAtacadoPorFuego(atacante);
     }
 
-    public int serAtacadoPorPlanta(Pokemon atacante) {
+    public Float serAtacadoPorPlanta(Pokemon atacante) {
         return this.tipo.serAtacadoPorPlanta(atacante);
     }
 
-    public int serAtacadoPorPiedra(Pokemon atacante) {
+    public Float serAtacadoPorPiedra(Pokemon atacante) {
         return this.tipo.serAtacadoPorPiedra(atacante);
     }
 }

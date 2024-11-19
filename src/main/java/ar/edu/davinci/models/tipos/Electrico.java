@@ -8,7 +8,7 @@ public class Electrico extends Tipo {
     }
 
     @Override
-    public int danio(Pokemon atacante, Pokemon defensor) {
+    public Float danio(Pokemon atacante, Pokemon defensor) {
         return defensor.serAtacadoPorElectrico(atacante);
     }
 }
