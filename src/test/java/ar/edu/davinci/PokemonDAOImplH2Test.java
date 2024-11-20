@@ -6,6 +6,7 @@ import ar.edu.davinci.models.tipos.Tipo;
 import ar.edu.davinci.models.tipos.Agua;
 import ar.edu.davinci.models.tipos.Fuego;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.List;
@@ -14,39 +15,44 @@ import static org.junit.Assert.assertEquals;
 
 public class PokemonDAOImplH2Test {
 
+    private PokemonDAOImplH2 conexion;
+    private Tipo fuego;
+    private Tipo agua;
+    private Pokemon pokemon;
+    private Pokemon pokemon2;
+
+    @BeforeEach
+    public void setUp() {
+        System.out.println("Inicializando los objetos para la prueba...");
+        conexion = new PokemonDAOImplH2();
+        fuego = new Fuego();
+        agua = new Agua();
+        pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
+        pokemon2 = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
+    }
+
     @Test
     @DisplayName("Test utilizado para verificar si la conexion se logra de forma exitosa")
-    public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa(){
-        try{
+    public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa() {
+        try {
             new PokemonDAOImplH2();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error al establecer la conexion: " + e.getMessage());
-            assert false: "No se pudo establcer la conexion";
+            assert false : "No se pudo establcer la conexion";
         }
-    };
+    }
 
     @Test
     @DisplayName("Cuando uso el metodo para guardar un pokemon en memoria lo hace de forma exitosa")
-    public void testParaVerificarQueSePuedeAgregarUnPokemon(){
-        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
-
+    public void testParaVerificarQueSePuedeAgregarUnPokemon() {
         Pokemon resultado = conexion.create(pokemon);
-
         assertEquals(pokemon, resultado);
-
-    };
+    }
 
     @Test
     @DisplayName("Verifico si el método para devolver un Pokémon por el ID lo hace de forma correcta")
     public void testParaDevolverQueSePuedeDevolverUnPokemonPorId() {
-        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Tipo tipo = new Fuego();
-        Pokemon pokemon = new Pokemon(tipo, "Charizard", 20F, 70F, 40F);
-
         Pokemon creado = conexion.create(pokemon);
-
         Pokemon resultado = conexion.getPokemonById(creado.getId());
 
         assertEquals(creado.getEspecie(), resultado.getEspecie());
@@ -58,13 +64,7 @@ public class PokemonDAOImplH2Test {
 
     @Test
     @DisplayName("Cuando uso el metodo para ver el listado de pokemones me devuelve todos los creados con sus respectivos detalles")
-    public void testParaVerificarQueSeMuestranTodosLosPokemones(){
-        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Tipo fuego = new Fuego();
-        Tipo agua = new Agua();
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
-        Pokemon pokemon2 = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
-
+    public void testParaVerificarQueSeMuestranTodosLosPokemones() {
         conexion.create(pokemon);
         conexion.create(pokemon2);
 
@@ -72,7 +72,7 @@ public class PokemonDAOImplH2Test {
 
         assertEquals(2, resultado.size());
         assertEquals("Charizard", resultado.get(0).getEspecie());
-        assertEquals(20, resultado.get(0).getPoder(),0);
+        assertEquals(20, resultado.get(0).getPoder(), 0);
         assertEquals(70, resultado.get(0).getEnergia(), 0);
         assertEquals(100, resultado.get(0).getVida(), 0);
 
@@ -85,13 +85,7 @@ public class PokemonDAOImplH2Test {
     @Test
     @DisplayName("Cuando actualizo un pokemon se guarda de forma exitosa con los datos que le pase")
     public void testParaVerificarQueSePuedenActualizarLosPokemonesDeFormaExitosa() {
-        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Tipo fuego = new Fuego();
-        Tipo agua = new Agua();
-
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
         Pokemon pokemonCreado = conexion.create(pokemon);
-
         Pokemon actualizacion = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
         Pokemon pokemonActualizado = conexion.update(actualizacion, pokemonCreado.getId());
 
@@ -101,17 +95,12 @@ public class PokemonDAOImplH2Test {
         assertEquals(actualizacion.getEnergia(), pokemonActualizado.getEnergia());
     }
 
-
     @Test
     @DisplayName("Cuando agrego un único Pokémon a la lista y luego lo elimino, el largo de la misma es 0")
     public void testParaVerificarQueSePuedenEliminarPokemones() {
-        PokemonDAOImplH2 conexion = new PokemonDAOImplH2();
-        Tipo fuego = new Fuego();
-        Pokemon pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
         conexion.create(pokemon);
-
         conexion.delete(pokemon);
-
         assertEquals(0, conexion.getAll().size());
     }
 }
+

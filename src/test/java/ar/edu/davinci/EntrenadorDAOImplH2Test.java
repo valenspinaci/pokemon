@@ -2,15 +2,29 @@ package ar.edu.davinci;
 
 import ar.edu.davinci.DAO.implementacion.EntrenadorDAOImplH2;
 import ar.edu.davinci.models.Entrenador;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 
 import java.sql.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class EntrenadorDAOImplH2Test {
+    EntrenadorDAOImplH2 conexion;
+    Entrenador entrenador;
+    Entrenador entrenador2;
+
+    @BeforeEach
+    public void setUp(){
+        conexion = new EntrenadorDAOImplH2();
+        entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
+        entrenador2 = new Entrenador("Misty", Date.valueOf("1995-05-12"), "Kanto", "Femenino", 22);
+    }
+
     @Test
     @DisplayName("Test utilizado para verificar si la conexion se logra de forma exitosa")
     public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa(){
@@ -25,9 +39,6 @@ public class EntrenadorDAOImplH2Test {
     @Test
     @DisplayName("Cuando uso el metodo para guardar un entrenador en memoria lo hace de forma exitosa")
     public void testParaVerificarQueSePuedeAgregarUnEntrenador(){
-        EntrenadorDAOImplH2 conexion = new EntrenadorDAOImplH2();
-        Entrenador entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
-
         Entrenador resultado = conexion.create(entrenador);
 
         assertEquals(entrenador, resultado);
@@ -36,9 +47,6 @@ public class EntrenadorDAOImplH2Test {
     @Test
     @DisplayName("Verifico si el método para devolver un Entrenador por el ID lo hace de forma correcta")
     public void testParaDevolverQueSePuedeDevolverUnEntrenadorPorId() {
-        EntrenadorDAOImplH2 conexion = new EntrenadorDAOImplH2();
-        Entrenador entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
-
         Entrenador creado = conexion.create(entrenador);
 
         Entrenador resultado = conexion.getEntrenadorById(creado.getId());
@@ -54,10 +62,6 @@ public class EntrenadorDAOImplH2Test {
     @Test
     @DisplayName("Cuando uso el metodo para ver el listado de entrenadores me devuelve todos los creados con sus respectivos detalles")
     public void testParaVerificarQueSeMuestranTodosLosEntrenadores(){
-        EntrenadorDAOImplH2 conexion = new EntrenadorDAOImplH2();
-        Entrenador entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
-        Entrenador entrenador2 = new Entrenador("Misty", Date.valueOf("1995-05-12"), "Kanto", "Femenino", 22);
-
         conexion.create(entrenador);
         conexion.create(entrenador2);
 
@@ -79,9 +83,6 @@ public class EntrenadorDAOImplH2Test {
     @Test
     @DisplayName("Cuando actualizo un entrenador se guarda de forma exitosa con los datos que le pase")
     public void testParaVerificarQueSePuedenActualizarLosEntrenadoresDeFormaExitosa() {
-        EntrenadorDAOImplH2 conexion = new EntrenadorDAOImplH2();
-
-        Entrenador entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
         Entrenador entrenadorCreado = conexion.create(entrenador);
 
         Entrenador actualizacion = new Entrenador("Misty", Date.valueOf("1995-05-12"), "Kanto", "Femenino", 22);
@@ -99,8 +100,6 @@ public class EntrenadorDAOImplH2Test {
     @Test
     @DisplayName("Cuando agrego un único entrenador a la lista y luego lo elimino, el largo de la misma es 0")
     public void testParaVerificarQueSePuedenEliminarEntrenadores() {
-        EntrenadorDAOImplH2 conexion = new EntrenadorDAOImplH2();
-        Entrenador entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
         conexion.create(entrenador);
 
         conexion.delete(entrenador);
