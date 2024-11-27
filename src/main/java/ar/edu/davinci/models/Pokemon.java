@@ -11,23 +11,26 @@ public class Pokemon {
     private Float energia;
     private Float danio;
     private Float vida;
+    private int idEntrenador;
 
-    public Pokemon(Tipo tipo, String especie, Float poder, Float energia, Float danio) {
+    public Pokemon(Tipo tipo, String especie, Float poder, Float energia, Float danio, int idEntrenador) {
         this.tipo = tipo;
         this.especie = especie;
         this.poder = poder;
         this.energia = energia;
         this.danio = danio;
+        this.idEntrenador = idEntrenador;
         this.vida = 100F;
     }
 
-    public Pokemon(int id, Tipo tipo, String especie, Float poder, Float energia, Float danio) {
+    public Pokemon(int id, Tipo tipo, String especie, Float poder, Float energia, Float danio, int idEntrenador) {
         this.id = id;
         this.tipo = tipo;
         this.especie = especie;
         this.poder = poder;
         this.energia = energia;
         this.danio = danio;
+        this.idEntrenador = idEntrenador;
         this.vida = 100F;
     }
 
@@ -60,6 +63,10 @@ public class Pokemon {
         return danio;
     }
 
+    public int getIdEntrenador() {
+        return idEntrenador;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -86,6 +93,10 @@ public class Pokemon {
 
     public void setDanio(Float danio) {
         this.danio = danio;
+    }
+
+    public void setIdEntrenador(int idEntrenador) {
+        this.idEntrenador = idEntrenador;
     }
 
     public void atacar(Pokemon otroPokemon) throws AtaqueException {

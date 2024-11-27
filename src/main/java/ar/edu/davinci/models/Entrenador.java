@@ -13,22 +13,25 @@ public class Entrenador {
     private String nacionalidad;
     private String genero;
     private int edad;
+    private int idUsuario;
     private List<Pokemon> pokemons;
 
-    public Entrenador(String nombre, String nacionalidad, String genero, int edad){
+    public Entrenador(String nombre, String nacionalidad, String genero, int edad, int idUsuario) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.genero = genero;
         this.edad = edad;
+        this.idUsuario = idUsuario;
         this.pokemons = new ArrayList<Pokemon>();
     };
 
-    public Entrenador(int id, String nombre, String nacionalidad, String genero, int edad){
+    public Entrenador(int id, String nombre, String nacionalidad, String genero, int edad, int idUsuario) {
         this.id = id;
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.genero = genero;
         this.edad = edad;
+        this.idUsuario = idUsuario;
         this.pokemons = new ArrayList<Pokemon>();
     };
 
@@ -52,6 +55,10 @@ public class Entrenador {
     public int getEdad() {
         return edad;
     };
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
     public List<Pokemon> getPokemons() {
         return pokemons;
@@ -79,6 +86,10 @@ public class Entrenador {
 
     public void setEdad(int edad) {
         this.edad = edad;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {

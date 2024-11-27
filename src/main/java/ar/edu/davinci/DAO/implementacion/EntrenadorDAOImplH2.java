@@ -2,6 +2,7 @@ package ar.edu.davinci.DAO.implementacion;
 
 import ar.edu.davinci.DAO.interfaces.EntrenadorDAO;
 import ar.edu.davinci.models.Entrenador;
+import ar.edu.davinci.models.Usuario;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    " (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(60), nacionalidad VARCHAR(60), genero VARCHAR(60), edad int)";
+                    " (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(60), nacionalidad VARCHAR(60), genero VARCHAR(60), edad int, id_usuario int)";
             statement.executeUpdate(sql);
             statement.close();
         }catch (SQLException e){
@@ -29,13 +30,14 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
     }
 
     public Entrenador create(Entrenador entrenador){
-        String sql = ("INSERT INTO " + TABLE_NAME + " (nombre, nacionalidad, genero, edad) VALUES (?, ?, ?, ?)");
+        String sql = ("INSERT INTO " + TABLE_NAME + " (nombre, nacionalidad, genero, edad, id_usuario) VALUES (?, ?, ?, ?, ?)");
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, entrenador.getNombre());
             pstmt.setString(2, entrenador.getNacionalidad());
             pstmt.setString(3, entrenador.getGenero());
             pstmt.setInt(4, entrenador.getEdad());
+            pstmt.setInt(5, entrenador.getIdUsuario());
 
             pstmt.executeUpdate();
 
@@ -64,7 +66,8 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
                         rs.getString("nombre"),
                         rs.getString("nacionalidad"),
                         rs.getString("genero"),
-                        rs.getInt("edad")
+                        rs.getInt("edad"),
+                        rs.getInt("id_usuario")
                 );
             }
             rs.close();
@@ -87,7 +90,8 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
                 String nacionalidad = resultSet.getString("nacionalidad");
                 String genero = resultSet.getString("genero");
                 int edad = resultSet.getInt("edad");
-                Entrenador entrenador = new Entrenador(id, nombre, nacionalidad, genero, edad);
+                int idUsuario = resultSet.getInt("id_usuario");
+                Entrenador entrenador = new Entrenador(id, nombre, nacionalidad, genero, edad, idUsuario);
                 entrenadores.add(entrenador);
             }
             resultSet.close();
@@ -98,8 +102,35 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
         return entrenadores;
     };
 
+    public List<Entrenador> getEntrenadoresByUsuario(int idUsuario) {
+        List<Entrenador> entrenadores = new ArrayList<>();
+
+        String sql = ("SELECT * FROM " + TABLE_NAME + " WHERE id_usuario = ?");
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, idUsuario);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Entrenador entrenador = new Entrenador(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("nacionalidad"),
+                        resultSet.getString("genero"),
+                        resultSet.getInt("edad"),
+                        resultSet.getInt("id_usuario")
+                );
+                entrenadores.add(entrenador);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entrenadores;
+    }
+
+
     public Entrenador update(Entrenador entrenador, int id){
-        String sql = ("UPDATE " + TABLE_NAME + " SET nombre = ?, nacionalidad = ?, genero = ?, edad = ? WHERE id = ?");
+        String sql = ("UPDATE " + TABLE_NAME + " SET nombre = ?, nacionalidad = ?, genero = ?, edad = ?, id_usuario = ? WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -107,7 +138,8 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             pstmt.setString(2, entrenador.getNacionalidad());
             pstmt.setString(3, entrenador.getGenero());
             pstmt.setInt(4, entrenador.getEdad());
-            pstmt.setInt(5, id);
+            pstmt.setInt(5, entrenador.getIdUsuario());
+            pstmt.setInt(6, id);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {

@@ -21,8 +21,8 @@ public class EntrenadorDAOImplH2Test {
     @BeforeEach
     public void setUp(){
         conexion = new EntrenadorDAOImplH2();
-        entrenador = new Entrenador("Ash Ketchum", "Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 22);
+        entrenador = new Entrenador("Ash Ketchum", "Kanto", "Masculino", 10, 1);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 22, 1);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class EntrenadorDAOImplH2Test {
     public void testParaVerificarQueSePuedenActualizarLosEntrenadoresDeFormaExitosa() {
         Entrenador entrenadorCreado = conexion.create(entrenador);
 
-        Entrenador actualizacion = new Entrenador("Misty", "Kanto", "Femenino", 22);
+        Entrenador actualizacion = new Entrenador("Misty", "Kanto", "Femenino", 22, 1);
         Entrenador entrenadorActualizado = conexion.update(actualizacion, entrenadorCreado.getId());
 
         assertEquals(actualizacion.getNombre(), entrenadorActualizado.getNombre());
@@ -90,6 +90,15 @@ public class EntrenadorDAOImplH2Test {
         assertEquals(actualizacion.getGenero(), entrenadorActualizado.getGenero());
         assertEquals(actualizacion.getEdad(), entrenadorActualizado.getEdad());
         assertEquals(actualizacion.getId(), entrenadorActualizado.getId());
+    }
+
+    @Test
+    @DisplayName("Cuando agrego entrenadores con un mismo usuario a la lista y quiero obtenerlos por el id de usuario lo hace de forma correcta")
+    public void testCuandoAgregoEntrenadoresConUnMismoUsuarioPuedoObtenerlosPorElIDDelMismo(){
+        conexion.create(entrenador);
+        conexion.create(entrenador2);
+
+        assertEquals(2, conexion.getEntrenadoresByUsuario(1).size());
     }
 
 

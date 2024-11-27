@@ -31,10 +31,10 @@ public class UsuarioTest {
         fuego = new Fuego();
         electrico = new Electrico();
         planta = new Planta();
-        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10);
-        entrenador3 = new Entrenador("Brock", "Kanto", "Masculino", 15);
-        entrenador4 = new Entrenador("Serena", "Kalos", "Femenino", 12);
+        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10, 1);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10, 1);
+        entrenador3 = new Entrenador("Brock", "Kanto", "Masculino", 15, 1);
+        entrenador4 = new Entrenador("Serena", "Kalos", "Femenino", 12, 1);
     }
 
     @Test
@@ -43,6 +43,15 @@ public class UsuarioTest {
         usuario.sumarEntrenador(entrenador);
 
         assertEquals(1, usuario.contarEntrenadores());
+    }
+
+    @Test
+    @DisplayName("Cuando agrego otro usuario el largo de la lista pasa a ser 2")
+    public void testCuandoUnUsuarioAgregaDosEntrenadoresElLargoDeLaListaPasaASer2() throws AgregarEntrenadorException {
+        usuario.sumarEntrenador(entrenador);
+        usuario.sumarEntrenador(entrenador2);
+
+        assertEquals(2, usuario.contarEntrenadores());
     }
 
     @Test

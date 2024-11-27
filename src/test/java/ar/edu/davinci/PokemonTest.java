@@ -22,8 +22,8 @@ public class PokemonTest {
     public void setUp(){
         fuego = new Fuego();
         agua = new Agua();
-        pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
-        pokemon2 = new Pokemon(agua, "Squirtle", 15F, 80F, 25F);
+        pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F, 1);
+        pokemon2 = new Pokemon(agua, "Squirtle", 15F, 80F, 25F, 1);
     }
 
     @Test

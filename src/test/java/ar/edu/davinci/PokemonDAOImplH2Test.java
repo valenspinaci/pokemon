@@ -27,8 +27,8 @@ public class PokemonDAOImplH2Test {
         conexion = new PokemonDAOImplH2();
         fuego = new Fuego();
         agua = new Agua();
-        pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F);
-        pokemon2 = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
+        pokemon = new Pokemon(fuego, "Charizard", 20F, 70F, 40F, 1);
+        pokemon2 = new Pokemon(agua, "Squirtle", 30F, 60F, 25F, 1);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class PokemonDAOImplH2Test {
     @DisplayName("Cuando actualizo un pokemon se guarda de forma exitosa con los datos que le pase")
     public void testParaVerificarQueSePuedenActualizarLosPokemonesDeFormaExitosa() {
         Pokemon pokemonCreado = conexion.create(pokemon);
-        Pokemon actualizacion = new Pokemon(agua, "Squirtle", 30F, 60F, 25F);
+        Pokemon actualizacion = new Pokemon(agua, "Squirtle", 30F, 60F, 25F, 1);
         Pokemon pokemonActualizado = conexion.update(actualizacion, pokemonCreado.getId());
 
         assertEquals(actualizacion.getTipo(), pokemonActualizado.getTipo());

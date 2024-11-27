@@ -68,6 +68,10 @@ public class Usuario {
         return contrasena;
     }
 
+    public List<Entrenador> getEntrenadores() {
+        return entrenadores;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -90,6 +94,10 @@ public class Usuario {
 
     public void setTelefono(int telefono) {
         this.telefono = telefono;
+    }
+
+    public void setEntrenadores(List<Entrenador> entrenadores) {
+        this.entrenadores = entrenadores;
     }
 
     public int contarEntrenadores() {
@@ -119,11 +127,17 @@ public class Usuario {
         return entrenadorSeleccionado;
     }
 
-    public Entrenador seleccionarEntrenadorRandom(){
-        return entrenadores.get(new Random().nextInt(entrenadores.size()));
-    }
+    /*public Entrenador seleccionarEntrenadorRandom() throws SeleccionarEntrenadorException {
+        if (this.getEntrenadores().isEmpty()) {
+            throw new SeleccionarEntrenadorException("No hay entrenadores disponibles");
+        }
+        Random random = new Random();
+        int index = random.nextInt(this.getEntrenadores().size());
+        return this.getEntrenadores().get(index);
+    }*/
 
-    public Entrenador enfrentarseA(Usuario otroUsuario) throws AtaqueException {
-        return this.seleccionarEntrenador(this.getId()).enfrentarseA(otroUsuario.seleccionarEntrenadorRandom());
+
+    public Entrenador enfrentarseA(Entrenador entrenadorUsuarioRival) throws AtaqueException, SeleccionarEntrenadorException {
+        return this.seleccionarEntrenador(this.getId()).enfrentarseA(entrenadorUsuarioRival);
     }
 }

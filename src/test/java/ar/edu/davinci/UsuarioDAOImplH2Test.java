@@ -23,7 +23,7 @@ public class UsuarioDAOImplH2Test {
         conexion = new UsuarioDAOImplH2();
         usuario = new Usuario("juanperez@gmail.com", "Juan", "Perez", "jp123","123", 1112345678);
         usuario2 = new Usuario("analopez@gmail.com", "Ana", "Lopez", "al.al.123","123", 1198765432);
-        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10);
+        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10, 1);
     }
 
     @Test

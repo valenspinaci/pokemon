@@ -27,12 +27,12 @@ public class EntrenadorTest {
 
     @BeforeEach
     public void setUp(){
-        entrenador = new Entrenador("Ash","Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10);
+        entrenador = new Entrenador("Ash","Kanto", "Masculino", 10, 1);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10, 1);
         fuego = new Fuego();
         agua = new Agua();
-        pokemon = new Pokemon(agua, "Squirtle", 20F, 50F, 25F);
-        pokemon2 = new Pokemon(fuego, "Charmander", 25F, 50F, 40F);
+        pokemon = new Pokemon(agua, "Squirtle", 20F, 50F, 25F, 1);
+        pokemon2 = new Pokemon(fuego, "Charmander", 25F, 50F, 40F, 1);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class EntrenadorTest {
     @DisplayName("Cuando un entrenador intenta capturar mas de 5 pokemones, el largo de la lista es cinco")
     public void testCuandoUnEntrenadorCapturaMasDeCincoPokemonesLaListaSigueTeniendoUnLargoDeCinco() throws CapturarPokemonException {
         for (int i = 0; i <= 4; i++) {
-            entrenador.capturarPokemon(new Pokemon(agua, "Squirtle" + i, 20F, 50F, 25F));
+            entrenador.capturarPokemon(new Pokemon(agua, "Squirtle" + i, 20F, 50F, 25F, 1));
         }
         assertThrows(CapturarPokemonException.class, () -> entrenador.capturarPokemon(pokemon));
     }

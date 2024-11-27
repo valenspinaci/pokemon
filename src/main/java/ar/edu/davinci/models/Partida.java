@@ -1,5 +1,6 @@
 package ar.edu.davinci.models;
 
+import ar.edu.davinci.DAO.implementacion.UsuarioDAOImplH2;
 import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
 
 import java.util.ArrayList;
@@ -10,7 +11,8 @@ public class Partida {
     private List<Usuario> usuarios;
 
     public Partida() {
-        this.usuarios = new ArrayList<Usuario>();
+        UsuarioDAOImplH2 usuarioDAO = new UsuarioDAOImplH2();
+        this.usuarios = usuarioDAO.getAll();
     }
 
     public List<Usuario> getUsuarios() {
