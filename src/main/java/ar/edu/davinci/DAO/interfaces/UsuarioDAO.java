@@ -16,5 +16,5 @@ public interface UsuarioDAO {
     Usuario update(Usuario usuario, int id);
 
     //DELETE
-    void delete(Usuario usuario);
+    void delete(int id);
 }

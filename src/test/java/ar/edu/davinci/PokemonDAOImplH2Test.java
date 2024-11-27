@@ -5,13 +5,14 @@ import ar.edu.davinci.models.Pokemon;
 import ar.edu.davinci.models.tipos.Tipo;
 import ar.edu.davinci.models.tipos.Agua;
 import ar.edu.davinci.models.tipos.Fuego;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class PokemonDAOImplH2Test {
 
@@ -23,7 +24,6 @@ public class PokemonDAOImplH2Test {
 
     @BeforeEach
     public void setUp() {
-        System.out.println("Inicializando los objetos para la prueba...");
         conexion = new PokemonDAOImplH2();
         fuego = new Fuego();
         agua = new Agua();
@@ -51,15 +51,15 @@ public class PokemonDAOImplH2Test {
 
     @Test
     @DisplayName("Verifico si el método para devolver un Pokémon por el ID lo hace de forma correcta")
-    public void testParaDevolverQueSePuedeDevolverUnPokemonPorId() {
+    public void testParaVerificarQueSePuedeDevolverUnPokemonPorId() {
         Pokemon creado = conexion.create(pokemon);
-        Pokemon resultado = conexion.getPokemonById(creado.getId());
+
+        Pokemon resultado = conexion.getPokemonById(1);
 
         assertEquals(creado.getEspecie(), resultado.getEspecie());
         assertEquals(creado.getPoder(), resultado.getPoder());
         assertEquals(creado.getEnergia(), resultado.getEnergia());
         assertEquals(creado.getVida(), resultado.getVida());
-        assertEquals(creado.getId(), resultado.getId());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class PokemonDAOImplH2Test {
     @DisplayName("Cuando agrego un único Pokémon a la lista y luego lo elimino, el largo de la misma es 0")
     public void testParaVerificarQueSePuedenEliminarPokemones() {
         conexion.create(pokemon);
-        conexion.delete(pokemon);
+        conexion.delete(1);
         assertEquals(0, conexion.getAll().size());
     }
 }

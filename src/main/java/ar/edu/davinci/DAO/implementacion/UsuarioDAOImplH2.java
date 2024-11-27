@@ -41,15 +41,6 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
             pstmt.setInt(5, usuario.getTelefono());
 
             pstmt.executeUpdate();
-
-            //Obtengo la clave generada
-            ResultSet rs = pstmt.getGeneratedKeys();
-            if(rs.next()){
-                usuario.setId(rs.getInt(1));
-            }else {
-                System.err.println("No se pudo obtener el ID generado para el Entrenador");
-            }
-
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,14 +57,12 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                int identificador = rs.getInt("id");
                 String email = rs.getString("email");
                 String nombre = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
                 String nickname = rs.getString("nickname");
                 int telefono = rs.getInt("telefono");
-                usuario = new Usuario(email, nombre, apellido, nickname, telefono);
-                usuario.setId(identificador);
+                usuario = new Usuario(id, email, nombre, apellido, nickname, telefono);
             }
             rs.close();
             pstmt.close();
@@ -96,8 +85,7 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
                 String apellido = resultSet.getString("apellido");
                 String nickname = resultSet.getString("nickname");
                 int telefono = resultSet.getInt("telefono");
-                Usuario usuario = new Usuario(email, nombre, apellido, nickname, telefono);
-                usuario.setId(id);
+                Usuario usuario = new Usuario(id, email, nombre, apellido, nickname, telefono);
                 usuarios.add(usuario);
             }
             resultSet.close();
@@ -128,12 +116,12 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
         return usuario;
     }
 
-    public void delete(Usuario usuario){
+    public void delete(int id){
         String sql = ("DELETE FROM " + TABLE_NAME + " WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, usuario.getId());
+            pstmt.setInt(1, id);
             pstmt.executeUpdate();
             pstmt.close();
         }catch (SQLException e){

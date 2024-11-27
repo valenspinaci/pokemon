@@ -29,9 +29,9 @@ public class PokemonDAOImplH2 implements PokemonDAO {
     }
 
     public Pokemon create(Pokemon pokemon){
-        String sql = ("INSERT INTO " + TABLE_NAME + "(tipo, especie, poder, energia, vida, danio) VALUES (?, ?, ?, ?, ?, ?)");
-        try{
-            PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        String sql = "INSERT INTO " + TABLE_NAME + "(tipo, especie, poder, energia, vida, danio) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, pokemon.getTipo().getNombre());
             pstmt.setString(2, pokemon.getEspecie());
             pstmt.setFloat(3, pokemon.getPoder());
@@ -40,21 +40,14 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             pstmt.setFloat(6, pokemon.getDanio());
 
             pstmt.executeUpdate();
-
-            ResultSet rs = pstmt.getGeneratedKeys();
-            if(rs.next()){
-                pokemon.setId(rs.getInt(1));
-            }else {
-                System.err.println("No se pudo obtener el ID generado para el Pokémon.");
-            }
-
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println("Pokemon agregado!");
         return pokemon;
-    };
+    }
+
 
     public Pokemon getPokemonById(int id){
         Pokemon pokemon = null;
@@ -64,16 +57,13 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                int identificador = rs.getInt("id");
                 String tipoNombre = rs.getString("tipo");
                 String especie = rs.getString("especie");
                 Float poder = rs.getFloat("poder");
                 Float energia = rs.getFloat("energia");
-                Float vida = rs.getFloat("vida");
                 Float danio = rs.getFloat("danio");
                 Tipo tipo = Tipo.crearTipoPorNombre(tipoNombre);
-                pokemon = new Pokemon(tipo, especie, poder, energia, danio);
-                pokemon.setId(identificador);
+                pokemon = new Pokemon(id, tipo, especie, poder, energia, danio);
             }
             rs.close();
             pstmt.close();
@@ -87,24 +77,22 @@ public class PokemonDAOImplH2 implements PokemonDAO {
     public List<Pokemon> getAll(){
         List<Pokemon> pokemons = new ArrayList<Pokemon>();
         String sql = ("SELECT * FROM " + TABLE_NAME + " ORDER BY id ASC");
-      try{
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-        while (resultSet.next()){
-            int id = resultSet.getInt("id");
-            String tipoNombre = resultSet.getString("tipo");
-            String especie = resultSet.getString("especie");
-            Float poder = resultSet.getFloat("poder");
-            Float energia = resultSet.getFloat("energia");
-            Float vida = resultSet.getFloat("vida");
-            Float danio = resultSet.getFloat("danio");
-            Tipo tipo = Tipo.crearTipoPorNombre(tipoNombre);
-            Pokemon pokemon = new Pokemon(tipo, especie, poder, energia, danio);
-            pokemon.setId(id);
-            pokemons.add(pokemon);
-        }
-        resultSet.close();
-        statement.close();
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                int id = resultSet.getInt("id");
+                String tipoNombre = resultSet.getString("tipo");
+                String especie = resultSet.getString("especie");
+                Float poder = resultSet.getFloat("poder");
+                Float energia = resultSet.getFloat("energia");
+                Float danio = resultSet.getFloat("danio");
+                Tipo tipo = Tipo.crearTipoPorNombre(tipoNombre);
+                Pokemon pokemon = new Pokemon(id, tipo, especie, poder, energia, danio);
+                pokemons.add(pokemon);
+            }
+            resultSet.close();
+            statement.close();
       } catch (SQLException e) {
           e.printStackTrace();
       }
@@ -132,13 +120,14 @@ public class PokemonDAOImplH2 implements PokemonDAO {
         return pokemon;
     }
 
-    public void delete(Pokemon pokemon){
+    public void delete(int id){
         String sql = ("DELETE FROM " + TABLE_NAME + " WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, pokemon.getId());
+            pstmt.setInt(1, id);
             pstmt.executeUpdate();
+            System.out.println("Pokemon eliminado!");
             pstmt.close();
         }catch (SQLException e){
             e.printStackTrace();

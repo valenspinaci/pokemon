@@ -10,15 +10,22 @@ import java.util.List;
 public class Entrenador {
     private int id;
     private String nombre;
-    private Date fechaNacimiento;
     private String nacionalidad;
     private String genero;
     private int edad;
     private List<Pokemon> pokemons;
 
-    public Entrenador(String nombre, Date fechaNacimiento, String nacionalidad, String genero, int edad){
+    public Entrenador(String nombre, String nacionalidad, String genero, int edad){
         this.nombre = nombre;
-        this.fechaNacimiento = fechaNacimiento;
+        this.nacionalidad = nacionalidad;
+        this.genero = genero;
+        this.edad = edad;
+        this.pokemons = new ArrayList<Pokemon>();
+    };
+
+    public Entrenador(int id, String nombre, String nacionalidad, String genero, int edad){
+        this.id = id;
+        this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.genero = genero;
         this.edad = edad;
@@ -32,10 +39,6 @@ public class Entrenador {
 
     public String getNombre() {
         return nombre;
-    };
-
-    public java.sql.Date getFechaNacimiento() {
-        return (java.sql.Date) fechaNacimiento;
     };
 
     public String getNacionalidad() {
@@ -66,10 +69,6 @@ public class Entrenador {
         this.nombre = nombre;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
     public void setNacionalidad(String nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
@@ -89,29 +88,25 @@ public class Entrenador {
         int suIndice = 0;
         Arbitro arbitro = new Arbitro();
 
-        //Pelean mientras ambos entrenadores tengan pokemones vivos
         while (miIndice < this.cantPokemons() && suIndice < otroEntrenador.cantPokemons()) {
             Pokemon miPokemon = this.pokemons.get(miIndice);
             Pokemon suPokemon = otroEntrenador.getPokemons().get(suIndice);
 
             System.out.println(miPokemon.getEspecie() + " de " + this.nombre + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre());
 
-            //Pelean hasta que uno de los pokemones se queda sin vida
             while (miPokemon.getVida() > 0 && suPokemon.getVida() > 0) {
                 miPokemon.atacar(suPokemon);
             }
 
-            //Si el Pokémon mio pierde, paso al siguiente pokemon
             if (miPokemon.getVida() <= 0) {
                 miIndice++;
             }
-            //Si el pokemon de mi oponente fue derrotado, paso al siguiente pokemon
+
             if (suPokemon.getVida() <= 0) {
                 suIndice++;
             }
         }
 
-        //Verificar ganador
         arbitro.verificarGanador(this, otroEntrenador, miIndice);
     }
 

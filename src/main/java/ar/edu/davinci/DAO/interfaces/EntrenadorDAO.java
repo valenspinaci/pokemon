@@ -16,5 +16,5 @@ public interface EntrenadorDAO {
     Entrenador update(Entrenador entrenador, int id);
 
     //DELETE
-    void delete(Entrenador entrenador);
+    void delete(int id);
 }

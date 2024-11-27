@@ -16,5 +16,5 @@ public interface PokemonDAO {
     Pokemon update(Pokemon pokemon, int id);
 
     //DELETE
-    void delete(Pokemon pokemon);
+    void delete(int id);
 }

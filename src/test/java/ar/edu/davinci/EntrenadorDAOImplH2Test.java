@@ -21,8 +21,8 @@ public class EntrenadorDAOImplH2Test {
     @BeforeEach
     public void setUp(){
         conexion = new EntrenadorDAOImplH2();
-        entrenador = new Entrenador("Ash Ketchum", Date.valueOf("2000-01-01"), "Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", Date.valueOf("1995-05-12"), "Kanto", "Femenino", 22);
+        entrenador = new Entrenador("Ash Ketchum", "Kanto", "Masculino", 10);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 22);
     }
 
     @Test
@@ -52,7 +52,6 @@ public class EntrenadorDAOImplH2Test {
         Entrenador resultado = conexion.getEntrenadorById(creado.getId());
 
         assertEquals(creado.getNombre(), resultado.getNombre());
-        assertEquals(creado.getFechaNacimiento(), resultado.getFechaNacimiento());
         assertEquals(creado.getNacionalidad(), resultado.getNacionalidad());
         assertEquals(creado.getGenero(), resultado.getGenero());
         assertEquals(creado.getEdad(), resultado.getEdad());
@@ -68,13 +67,11 @@ public class EntrenadorDAOImplH2Test {
         List<Entrenador> resultado = conexion.getAll();
 
         assertEquals("Ash Ketchum", resultado.get(0).getNombre());
-        assertEquals(Date.valueOf("2000-01-01"), resultado.get(0).getFechaNacimiento());
         assertEquals("Kanto", resultado.get(0).getNacionalidad());
         assertEquals("Masculino", resultado.get(0).getGenero());
         assertEquals(10, resultado.get(0).getEdad());
 
         assertEquals("Misty", resultado.get(1).getNombre());
-        assertEquals(Date.valueOf("1995-05-12"), resultado.get(1).getFechaNacimiento());
         assertEquals("Kanto", resultado.get(1).getNacionalidad());
         assertEquals("Femenino", resultado.get(1).getGenero());
         assertEquals(22, resultado.get(1).getEdad());
@@ -85,11 +82,10 @@ public class EntrenadorDAOImplH2Test {
     public void testParaVerificarQueSePuedenActualizarLosEntrenadoresDeFormaExitosa() {
         Entrenador entrenadorCreado = conexion.create(entrenador);
 
-        Entrenador actualizacion = new Entrenador("Misty", Date.valueOf("1995-05-12"), "Kanto", "Femenino", 22);
+        Entrenador actualizacion = new Entrenador("Misty", "Kanto", "Femenino", 22);
         Entrenador entrenadorActualizado = conexion.update(actualizacion, entrenadorCreado.getId());
 
         assertEquals(actualizacion.getNombre(), entrenadorActualizado.getNombre());
-        assertEquals(actualizacion.getFechaNacimiento(), entrenadorActualizado.getFechaNacimiento());
         assertEquals(actualizacion.getNacionalidad(), entrenadorActualizado.getNacionalidad());
         assertEquals(actualizacion.getGenero(), entrenadorActualizado.getGenero());
         assertEquals(actualizacion.getEdad(), entrenadorActualizado.getEdad());
@@ -102,7 +98,7 @@ public class EntrenadorDAOImplH2Test {
     public void testParaVerificarQueSePuedenEliminarEntrenadores() {
         conexion.create(entrenador);
 
-        conexion.delete(entrenador);
+        conexion.delete(1);
 
         assertEquals(0, conexion.getAll().size());
     }

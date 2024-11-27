@@ -23,7 +23,7 @@ public class UsuarioDAOImplH2Test {
         conexion = new UsuarioDAOImplH2();
         usuario = new Usuario("juanperez@gmail.com", "Juan", "Perez", "jp123", 1112345678);
         usuario2 = new Usuario("analopez@gmail.com", "Ana", "Lopez", "al.al.123", 1198765432);
-        entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
+        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class UsuarioDAOImplH2Test {
     public void testParaVerificarQueSePuedenEliminarUsuarios() {
         conexion.create(usuario);
 
-        conexion.delete(usuario);
+        conexion.delete(1);
 
         assertEquals(0, conexion.getAll().size());
     }

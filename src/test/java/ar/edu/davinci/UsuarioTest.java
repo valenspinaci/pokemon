@@ -2,14 +2,11 @@ package ar.edu.davinci;
 
 import ar.edu.davinci.exceptions.AgregarEntrenadorException;
 import ar.edu.davinci.models.Entrenador;
-import ar.edu.davinci.models.Pokemon;
 import ar.edu.davinci.models.Usuario;
 import ar.edu.davinci.models.tipos.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,10 +31,10 @@ public class UsuarioTest {
         fuego = new Fuego();
         electrico = new Electrico();
         planta = new Planta();
-        entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", new Date(), "Kanto", "Femenino", 10);
-        entrenador3 = new Entrenador("Brock", new Date(), "Kanto", "Masculino", 15);
-        entrenador4 = new Entrenador("Serena", new Date(), "Kalos", "Femenino", 12);
+        entrenador = new Entrenador("Ash", "Kanto", "Masculino", 10);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10);
+        entrenador3 = new Entrenador("Brock", "Kanto", "Masculino", 15);
+        entrenador4 = new Entrenador("Serena", "Kalos", "Femenino", 12);
     }
 
     @Test

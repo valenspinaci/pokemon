@@ -20,7 +20,7 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    " (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(60), fechaNacimiento DATE, nacionalidad VARCHAR(60), genero VARCHAR(60), edad int)";
+                    " (id INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(60), nacionalidad VARCHAR(60), genero VARCHAR(60), edad int)";
             statement.executeUpdate(sql);
             statement.close();
         }catch (SQLException e){
@@ -29,25 +29,15 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
     }
 
     public Entrenador create(Entrenador entrenador){
-        String sql = ("INSERT INTO " + TABLE_NAME + " (nombre, fechaNacimiento, nacionalidad, genero, edad) VALUES (?, ?, ?, ?, ?)");
+        String sql = ("INSERT INTO " + TABLE_NAME + " (nombre, nacionalidad, genero, edad) VALUES (?, ?, ?, ?)");
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, entrenador.getNombre());
-            pstmt.setDate(2, entrenador.getFechaNacimiento());
-            pstmt.setString(3, entrenador.getNacionalidad());
-            pstmt.setString(4, entrenador.getGenero());
-            pstmt.setInt(5, entrenador.getEdad());
+            pstmt.setString(2, entrenador.getNacionalidad());
+            pstmt.setString(3, entrenador.getGenero());
+            pstmt.setInt(4, entrenador.getEdad());
 
             pstmt.executeUpdate();
-
-            //Obtengo la clave generada
-            ResultSet rs = pstmt.getGeneratedKeys();
-            if(rs.next()){
-                entrenador.setId(rs.getInt(1));
-            }else {
-                System.err.println("No se pudo obtener el ID generado para el Entrenador");
-            }
-
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,28 +47,26 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
     };
 
     public Entrenador getEntrenadorById(int id){
-        Entrenador entrenador = null;
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                int identificador = rs.getInt("id");
-                String nombre = rs.getString("nombre");
-                Date fechaNacimiento = rs.getDate("fechaNacimiento");
-                String nacionalidad = rs.getString("nacionalidad");
-                String genero = rs.getString("genero");
-                int edad = rs.getInt("edad");
-                entrenador = new Entrenador(nombre, fechaNacimiento, nacionalidad, genero, edad);
-                entrenador.setId(identificador);
+                return new Entrenador(
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getString("nacionalidad"),
+                        rs.getString("genero"),
+                        rs.getInt("edad")
+                );
             }
             rs.close();
             pstmt.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }
-        return entrenador;
+        return null;
     }
 
     public List<Entrenador> getAll(){
@@ -90,12 +78,10 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             while (resultSet.next()){
                 int id = resultSet.getInt("id");
                 String nombre = resultSet.getString("nombre");
-                Date fechaNacimiento = resultSet.getDate("fechaNacimiento");
                 String nacionalidad = resultSet.getString("nacionalidad");
                 String genero = resultSet.getString("genero");
                 int edad = resultSet.getInt("edad");
-                Entrenador entrenador = new Entrenador(nombre, fechaNacimiento, nacionalidad, genero, edad);
-                entrenador.setId(id);
+                Entrenador entrenador = new Entrenador(id, nombre, nacionalidad, genero, edad);
                 entrenadores.add(entrenador);
             }
             resultSet.close();
@@ -107,16 +93,15 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
     };
 
     public Entrenador update(Entrenador entrenador, int id){
-        String sql = ("UPDATE " + TABLE_NAME + " SET nombre = ?, fechaNacimiento = ?, nacionalidad = ?, genero = ?, edad = ? WHERE id = ?");
+        String sql = ("UPDATE " + TABLE_NAME + " SET nombre = ?, nacionalidad = ?, genero = ?, edad = ? WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, entrenador.getNombre());
-            pstmt.setDate(2, entrenador.getFechaNacimiento());
-            pstmt.setString(3, entrenador.getNacionalidad());
-            pstmt.setString(4, entrenador.getGenero());
-            pstmt.setInt(5, entrenador.getEdad());
-            pstmt.setInt(6, id);
+            pstmt.setString(2, entrenador.getNacionalidad());
+            pstmt.setString(3, entrenador.getGenero());
+            pstmt.setInt(4, entrenador.getEdad());
+            pstmt.setInt(5, id);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
@@ -126,13 +111,14 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
         return entrenador;
     }
 
-    public void delete(Entrenador entrenador){
+    public void delete(int id){
         String sql = ("DELETE FROM " + TABLE_NAME + " WHERE id = ?");
 
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, entrenador.getId());
+            pstmt.setInt(1, id);
             pstmt.executeUpdate();
+            System.out.println("Entrenador eliminado!");
             pstmt.close();
         }catch (SQLException e){
             e.printStackTrace();

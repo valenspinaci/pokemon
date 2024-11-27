@@ -24,6 +24,16 @@ public class Usuario {
         this.entrenadores = new ArrayList<Entrenador>();
     }
 
+    public Usuario(int id, String email, String nombre,String apellido,String nickname, int telefono) {
+        this.id = id;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.nickname = nickname;
+        this.telefono = telefono;
+        this.entrenadores = new ArrayList<Entrenador>();
+    }
+
     public int getId() {
         return id;
     }

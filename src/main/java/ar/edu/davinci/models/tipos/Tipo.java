@@ -15,10 +15,11 @@ public abstract class Tipo {
 
     public static Tipo crearTipoPorNombre(String tipoNombre) {
         switch (tipoNombre) {
-            case "Agua": return new Agua();
-            case "Fuego": return new Fuego();
-            case "Electrico": return new Electrico();
-            //Excepcion
+            case "agua": return new Agua();
+            case "fuego": return new Fuego();
+            case "electrico": return new Electrico();
+            case "planta": return new Planta();
+            case "piedra": return new Piedra();
             default: return null;
         }
     }

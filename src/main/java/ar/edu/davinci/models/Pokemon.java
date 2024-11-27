@@ -21,6 +21,16 @@ public class Pokemon {
         this.vida = 100F;
     }
 
+    public Pokemon(int id, Tipo tipo, String especie, Float poder, Float energia, Float danio) {
+        this.id = id;
+        this.tipo = tipo;
+        this.especie = especie;
+        this.poder = poder;
+        this.energia = energia;
+        this.danio = danio;
+        this.vida = 100F;
+    }
+
     //Getters & Setters
     public int getId() {
         return id;

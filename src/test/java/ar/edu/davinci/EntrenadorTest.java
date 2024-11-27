@@ -27,8 +27,8 @@ public class EntrenadorTest {
 
     @BeforeEach
     public void setUp(){
-        entrenador = new Entrenador("Ash", new Date(), "Kanto", "Masculino", 10);
-        entrenador2 = new Entrenador("Misty", new Date(), "Kanto", "Femenino", 10);
+        entrenador = new Entrenador("Ash","Kanto", "Masculino", 10);
+        entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 10);
         fuego = new Fuego();
         agua = new Agua();
         pokemon = new Pokemon(agua, "Squirtle", 20F, 50F, 25F);
