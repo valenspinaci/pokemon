@@ -25,7 +25,6 @@ public abstract class Tipo {
         }
     }
 
-    //Daño por defecto
     public abstract Float danio(Pokemon atacante, Pokemon defensor);
 
         public Float serAtacadoPorAgua(Pokemon atacante){

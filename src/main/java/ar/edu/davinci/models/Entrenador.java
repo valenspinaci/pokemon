@@ -4,7 +4,6 @@ import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Entrenador {

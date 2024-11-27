@@ -2,12 +2,10 @@ package ar.edu.davinci.models;
 
 import ar.edu.davinci.exceptions.AgregarEntrenadorException;
 import ar.edu.davinci.exceptions.AtaqueException;
-import ar.edu.davinci.exceptions.CapturarPokemonException;
 import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Usuario {
     private int id;
@@ -122,16 +120,6 @@ public class Usuario {
         }
         return entrenadorSeleccionado;
     }
-
-    /*public Entrenador seleccionarEntrenadorRandom() throws SeleccionarEntrenadorException {
-        if (this.getEntrenadores().isEmpty()) {
-            throw new SeleccionarEntrenadorException("No hay entrenadores disponibles");
-        }
-        Random random = new Random();
-        int index = random.nextInt(this.getEntrenadores().size());
-        return this.getEntrenadores().get(index);
-    }*/
-
 
     public Entrenador enfrentarseA(Entrenador entrenadorUsuarioRival) throws AtaqueException, SeleccionarEntrenadorException {
         return this.seleccionarEntrenador(this.getId()).enfrentarseA(entrenadorUsuarioRival);
