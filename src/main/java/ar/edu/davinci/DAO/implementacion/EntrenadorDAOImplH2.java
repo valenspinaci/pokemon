@@ -38,6 +38,12 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             pstmt.setInt(4, entrenador.getEdad());
 
             pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                entrenador.setId(rs.getInt(1));
+            }
+
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();

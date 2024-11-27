@@ -40,6 +40,12 @@ public class PokemonDAOImplH2 implements PokemonDAO {
             pstmt.setFloat(6, pokemon.getDanio());
 
             pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                pokemon.setId(rs.getInt(1));
+            }
+
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();

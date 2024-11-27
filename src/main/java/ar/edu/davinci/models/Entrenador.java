@@ -81,7 +81,7 @@ public class Entrenador {
         this.edad = edad;
     }
 
-    public void enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {
+    public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {
         System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
 
         int miIndice = 0;
@@ -107,7 +107,7 @@ public class Entrenador {
             }
         }
 
-        arbitro.verificarGanador(this, otroEntrenador, miIndice);
+        return arbitro.verificarGanador(this, otroEntrenador, miIndice);
     }
 
     public void capturarPokemon(Pokemon pokemon) throws CapturarPokemonException {

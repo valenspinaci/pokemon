@@ -1,10 +1,13 @@
 package ar.edu.davinci.models;
 
 import ar.edu.davinci.exceptions.AgregarEntrenadorException;
+import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
+import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Usuario {
     private int id;
@@ -12,24 +15,27 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String nickname;
+    private String contrasena;
     private int telefono;
     private List<Entrenador> entrenadores;
 
-    public Usuario(String email, String nombre,String apellido,String nickname, int telefono) {
+    public Usuario(String email, String nombre,String apellido,String nickname, String contrasena, int telefono) {
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
         this.nickname = nickname;
+        this.contrasena = contrasena;
         this.telefono = telefono;
         this.entrenadores = new ArrayList<Entrenador>();
     }
 
-    public Usuario(int id, String email, String nombre,String apellido,String nickname, int telefono) {
+    public Usuario(int id, String email, String nombre,String apellido,String nickname, String contrasena, int telefono) {
         this.id = id;
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
         this.nickname = nickname;
+        this.contrasena = contrasena;
         this.telefono = telefono;
         this.entrenadores = new ArrayList<Entrenador>();
     }
@@ -58,6 +64,10 @@ public class Usuario {
         return telefono;
     }
 
+    public String getContrasena() {
+        return contrasena;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -82,6 +92,10 @@ public class Usuario {
         this.telefono = telefono;
     }
 
+    public int contarEntrenadores() {
+        return this.entrenadores.size();
+    };
+
     public void sumarEntrenador(Entrenador entrenador) throws AgregarEntrenadorException {
         if (entrenadores.size() >= 3) {
             throw new AgregarEntrenadorException("No podes agregar mas de 3 entrenadores");
@@ -90,7 +104,26 @@ public class Usuario {
         }
     };
 
-    public int contarEntrenadores() {
-        return this.entrenadores.size();
-    };
+    public Usuario buscarRival() throws SeleccionarEntrenadorException {
+        Partida partida = new Partida();
+        return partida.buscarRival(this.getId());
+    }
+
+    public Entrenador seleccionarEntrenador(int id){
+        Entrenador entrenadorSeleccionado = null;
+        for (Entrenador entrenador:entrenadores){
+            if (entrenador.getId() == id){
+                entrenadorSeleccionado = entrenador;
+            }
+        }
+        return entrenadorSeleccionado;
+    }
+
+    public Entrenador seleccionarEntrenadorRandom(){
+        return entrenadores.get(new Random().nextInt(entrenadores.size()));
+    }
+
+    public Entrenador enfrentarseA(Usuario otroUsuario) throws AtaqueException {
+        return this.seleccionarEntrenador(this.getId()).enfrentarseA(otroUsuario.seleccionarEntrenadorRandom());
+    }
 }

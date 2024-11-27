@@ -25,8 +25,8 @@ public class UsuarioTest {
 
     @BeforeEach
     public void setUp() {
-        usuario = new Usuario("juanperez@gmail.com", "Juan", "Perez", "jp123", 1112345678);
-        usuario2 = new Usuario("analopez@gmail.com", "Ana", "Lopez", "al.al.123", 1198765432);
+        usuario = new Usuario("juanperez@gmail.com", "Juan", "Perez", "jp123","123", 1112345678);
+        usuario2 = new Usuario("analopez@gmail.com", "Ana", "Lopez", "al.al.123","123", 1198765432);
         agua = new Agua();
         fuego = new Fuego();
         electrico = new Electrico();

@@ -22,7 +22,7 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
             this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    "(id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(60), nombre VARCHAR(60), apellido VARCHAR(60), nickname VARCHAR(60) UNIQUE , telefono INT)";
+                    "(id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(60), nombre VARCHAR(60), apellido VARCHAR(60), nickname VARCHAR(60) UNIQUE, contrasena VARCHAR(60), telefono INT)";
             statement.executeUpdate(sql);
             statement.close();
         }catch (SQLException e){
@@ -31,16 +31,23 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
     }
 
     public Usuario create(Usuario usuario){
-        String sql = ("INSERT INTO " + TABLE_NAME + " (email, nombre, apellido, nickname, telefono) VALUES (?, ?, ?, ?, ?)");
+        String sql = ("INSERT INTO " + TABLE_NAME + " (email, nombre, apellido, nickname, contrasena, telefono) VALUES (?, ?, ?, ?, ?, ?)");
         try{
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, usuario.getEmail());
             pstmt.setString(2, usuario.getNombre());
             pstmt.setString(3, usuario.getApellido());
             pstmt.setString(4, usuario.getNickname());
-            pstmt.setInt(5, usuario.getTelefono());
+            pstmt.setString(5, usuario.getContrasena());
+            pstmt.setInt(6, usuario.getTelefono());
 
             pstmt.executeUpdate();
+
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if(rs.next()){
+                usuario.setId(rs.getInt(1));
+            }
+
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,8 +68,9 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
                 String nombre = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
                 String nickname = rs.getString("nickname");
+                String contrasena = rs.getString("contrasena");
                 int telefono = rs.getInt("telefono");
-                usuario = new Usuario(id, email, nombre, apellido, nickname, telefono);
+                usuario = new Usuario(id, email, nombre, apellido, nickname, contrasena, telefono);
             }
             rs.close();
             pstmt.close();
@@ -84,8 +92,9 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
                 String nombre = resultSet.getString("nombre");
                 String apellido = resultSet.getString("apellido");
                 String nickname = resultSet.getString("nickname");
+                String contrasena = resultSet.getString("contrasena");
                 int telefono = resultSet.getInt("telefono");
-                Usuario usuario = new Usuario(id, email, nombre, apellido, nickname, telefono);
+                Usuario usuario = new Usuario(id, email, nombre, apellido, nickname, contrasena, telefono);
                 usuarios.add(usuario);
             }
             resultSet.close();
@@ -94,6 +103,36 @@ public class UsuarioDAOImplH2 implements UsuarioDAO {
             e.printStackTrace();
         }
         return usuarios;
+    }
+
+    public Usuario validateUser(String nickname, String contrasena) {
+        Usuario usuario = null;
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE nickname = ? AND contrasena = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, nickname);
+            pstmt.setString(2, contrasena);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String email = rs.getString("email");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String nicknameDb = rs.getString("nickname");
+                String contrasenaDb = rs.getString("contrasena");
+                int telefono = rs.getInt("telefono");
+
+                usuario = new Usuario(id, email, nombre, apellido, nicknameDb, contrasenaDb, telefono);
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return usuario;
     }
 
     public Usuario update(Usuario usuario, int id){
