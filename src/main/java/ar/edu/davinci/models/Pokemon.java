@@ -101,23 +101,25 @@ public class Pokemon {
 
     public void atacar(Pokemon otroPokemon) throws AtaqueException {
         if(this.getVida()<=0){
-            System.out.println(otroPokemon.getEspecie() + " ha sido derrotado!");
-            throw new AtaqueException("El pokemon no tiene vida para atacar");
-        }else{
-            otroPokemon.restarVida(this.tipo.danio(this, otroPokemon));
-            this.energia -= 10;
-            System.out.println(this.getEspecie() + " ataca! " + otroPokemon.getEspecie() + " queda con " + this.getVida() + " vida.");
+            throw new AtaqueException(this.getEspecie() + " no puede atacar porque fue derrotado");
         }
+
+        otroPokemon.restarVida(this.tipo.danio(this, otroPokemon));
+        this.energia -= 10;
+        System.out.println(this.getEspecie() + " ataca! " + otroPokemon.getEspecie() + " queda con " + this.getVida() + " vida.");
 
         if(otroPokemon.getVida()<=0){
             System.out.println(this.getEspecie() + " ha sido derrotado!");
-            throw new AtaqueException("El pokemon no tiene vida para atacar");
-        }else{
-            this.restarVida(otroPokemon.tipo.danio(otroPokemon, this));
-            this.energia -= 10;
-            System.out.println(otroPokemon.getEspecie() + " ataca! " + this.getEspecie() + " queda con " + otroPokemon.getVida() + " vida.");
+            return;
         }
 
+        this.restarVida(otroPokemon.tipo.danio(otroPokemon, this));
+        otroPokemon.energia -= 10;
+        System.out.println(otroPokemon.getEspecie() + " ataca! " + this.getEspecie() + " queda con " + otroPokemon.getVida() + " vida.");
+
+        if (this.getVida() <= 0) {
+            System.out.println(this.getEspecie() + " ha sido derrotado!");
+        }
     }
 
     public void restarVida(Float cantidad){

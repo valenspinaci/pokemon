@@ -14,13 +14,14 @@ public abstract class Tipo {
     }
 
     public static Tipo crearTipoPorNombre(String tipoNombre) {
-        switch (tipoNombre) {
+        switch (tipoNombre.toLowerCase()) {
             case "agua": return new Agua();
             case "fuego": return new Fuego();
             case "electrico": return new Electrico();
             case "planta": return new Planta();
             case "piedra": return new Piedra();
-            default: return null;
+            default:
+                throw new IllegalArgumentException("Tipo no valido: " + tipoNombre);
         }
     }
 

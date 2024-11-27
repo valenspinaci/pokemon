@@ -100,10 +100,6 @@ public class Usuario {
         this.entrenadores = entrenadores;
     }
 
-    public int contarEntrenadores() {
-        return this.entrenadores.size();
-    };
-
     public void sumarEntrenador(Entrenador entrenador) throws AgregarEntrenadorException {
         if (entrenadores.size() >= 3) {
             throw new AgregarEntrenadorException("No podes agregar mas de 3 entrenadores");

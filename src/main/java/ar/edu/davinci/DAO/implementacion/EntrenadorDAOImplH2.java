@@ -1,13 +1,16 @@
 package ar.edu.davinci.DAO.implementacion;
 
 import ar.edu.davinci.DAO.interfaces.EntrenadorDAO;
+import ar.edu.davinci.exceptions.CapturarPokemonException;
 import ar.edu.davinci.models.Entrenador;
+import ar.edu.davinci.models.Pokemon;
 import ar.edu.davinci.models.Usuario;
+import ar.edu.davinci.models.tipos.Tipo;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class EntrenadorDAOImplH2 implements EntrenadorDAO {
     private static final String URL = "jdbc:h2:mem:testdb";
@@ -46,36 +49,56 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
                 entrenador.setId(rs.getInt(1));
             }
 
+            String[] tipos = {"fuego","agua","planta","electrico","piedra"};
+            String[] especies = {"Charizard", "Squirtle", "Pikachu", "Bulbasaur", "Eevee", "Snorlax"};
+            Random random = new Random();
+
+            String tipoStr = tipos[random.nextInt(tipos.length)];
+            Tipo tipo = Tipo.crearTipoPorNombre(tipoStr);
+            String especie = especies[random.nextInt(especies.length)];
+            Float poder = random.nextFloat(100F);
+            Float energia = random.nextFloat(100F);
+            Float danio = random.nextFloat(100F);
+            Pokemon pokemon = new Pokemon(tipo, especie, poder, energia, danio, entrenador.getId());
+
+            PokemonDAOImplH2 pokemonDAO = new PokemonDAOImplH2();
+            pokemonDAO.create(pokemon);
+            entrenador.capturarPokemon(pokemon);
+
             pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (CapturarPokemonException e) {
+            throw new RuntimeException(e);
         }
         System.out.println("Entrenador agregado!");
         return entrenador;
     };
 
     public Entrenador getEntrenadorById(int id){
+        Entrenador entrenador = null;
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()) {
-                return new Entrenador(
-                        rs.getInt("id"),
-                        rs.getString("nombre"),
-                        rs.getString("nacionalidad"),
-                        rs.getString("genero"),
-                        rs.getInt("edad"),
-                        rs.getInt("id_usuario")
-                );
+                String nombre = rs.getString("nombre");
+                String nacionalidad = rs.getString("nacionalidad");
+                String genero = rs.getString("genero");
+                int edad = rs.getInt("edad");
+                int id_usuario = rs.getInt("id_usuario");
+                entrenador = new Entrenador(id, nombre, nacionalidad, genero, edad, id_usuario);
+                PokemonDAOImplH2 pokemonDAO = new PokemonDAOImplH2();
+                List<Pokemon> pokemons = pokemonDAO.getPokemonesByEntrenador(id);
+                entrenador.setPokemons(pokemons);
             }
             rs.close();
             pstmt.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return entrenador;
     }
 
     public List<Entrenador> getAll(){
@@ -104,6 +127,7 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
 
     public List<Entrenador> getEntrenadoresByUsuario(int idUsuario) {
         List<Entrenador> entrenadores = new ArrayList<>();
+        Entrenador entrenador = null;
 
         String sql = ("SELECT * FROM " + TABLE_NAME + " WHERE id_usuario = ?");
 
@@ -112,7 +136,7 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
             stmt.setInt(1, idUsuario);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                Entrenador entrenador = new Entrenador(
+                entrenador = new Entrenador(
                         resultSet.getInt("id"),
                         resultSet.getString("nombre"),
                         resultSet.getString("nacionalidad"),
@@ -120,6 +144,8 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
                         resultSet.getInt("edad"),
                         resultSet.getInt("id_usuario")
                 );
+                PokemonDAOImplH2 pokemonDAO = new PokemonDAOImplH2();
+                entrenador.setPokemons(pokemonDAO.getPokemonesByEntrenador(entrenador.getId()));
                 entrenadores.add(entrenador);
             }
         } catch (SQLException e) {

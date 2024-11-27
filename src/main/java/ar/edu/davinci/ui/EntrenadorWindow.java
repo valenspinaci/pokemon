@@ -1,6 +1,7 @@
 package ar.edu.davinci.ui;
 
 import ar.edu.davinci.DAO.implementacion.EntrenadorDAOImplH2;
+import ar.edu.davinci.DAO.implementacion.PokemonDAOImplH2;
 import ar.edu.davinci.DAO.implementacion.UsuarioDAOImplH2;
 import ar.edu.davinci.exceptions.AgregarEntrenadorException;
 import ar.edu.davinci.exceptions.AtaqueException;
@@ -17,6 +18,7 @@ import java.util.Random;
 public class EntrenadorWindow extends JFrame {
     private EntrenadorDAOImplH2 entrenadorDAO;
     private UsuarioDAOImplH2 usuarioDAO;
+    private PokemonDAOImplH2 pokemonDAO;
     private int idUsuario;
     private JPanel panelEntrenadores;
     private JButton crearButton, eliminarButton, elegirButton, inicioButton;
@@ -27,6 +29,7 @@ public class EntrenadorWindow extends JFrame {
         this.idUsuario = idUsuario;
         this.entrenadorDAO = new EntrenadorDAOImplH2();
         this.usuarioDAO = new UsuarioDAOImplH2();
+        this.pokemonDAO = new PokemonDAOImplH2();
 
         setTitle("Gestion de entrenadores");
         setSize(600, 300);
@@ -70,7 +73,7 @@ public class EntrenadorWindow extends JFrame {
             elegirButton.setEnabled(false);
         }else{
             for(Entrenador entrenador : entrenadores){
-                modeloLista.addElement(entrenador.getId() + " - " + entrenador.getNombre() + " - " + entrenador.getNacionalidad() + " - " + entrenador.getEdad() + " años - Pokemones: " + entrenador.cantPokemons());
+                modeloLista.addElement(entrenador.getId() + " - " + entrenador.getNombre() + " - " + entrenador.getNacionalidad() + " - " + entrenador.getEdad() + " años - Pokemones: " + pokemonDAO.getPokemonesByEntrenador(entrenador.getId()).size());
             }
             listaEntrenadores.setEnabled(true);
             eliminarButton.setEnabled(true);
@@ -103,7 +106,6 @@ public class EntrenadorWindow extends JFrame {
                 entrenadorDAO.create(nuevoEntrenador);
                 usuario.setEntrenadores(entrenadorDAO.getEntrenadoresByUsuario(idUsuario));
                 actualizarListaEntrenadores();
-                System.out.println(usuario.contarEntrenadores());
             } else {
                 JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -137,6 +139,8 @@ public class EntrenadorWindow extends JFrame {
 
                 try {
                     Entrenador entrenadorRival = elegirRivalAleatorio();
+                    System.out.println(entrenadorElegido.cantPokemons());
+                    System.out.println(entrenadorRival.cantPokemons());
                     Entrenador ganador = entrenadorElegido.enfrentarseA(entrenadorRival);
                     mostrarResultadoBatalla(ganador);
 
@@ -156,6 +160,8 @@ public class EntrenadorWindow extends JFrame {
     private Entrenador elegirRivalAleatorio() throws SeleccionarEntrenadorException {
         Partida partida = new Partida();
         Usuario usuarioRival = partida.buscarRival(idUsuario);
+        System.out.println("Nickanme usuario rival: " + usuarioRival.getNickname());
+        System.out.println("Entrenadores usuario rival: " + entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).size());
 
         if (entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).isEmpty()) {
             throw new SeleccionarEntrenadorException("No hay entrenadores disponibles");

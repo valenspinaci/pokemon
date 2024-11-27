@@ -92,6 +92,10 @@ public class Entrenador {
         this.idUsuario = idUsuario;
     }
 
+    public void setPokemons(List<Pokemon> pokemons) {
+        this.pokemons = pokemons;
+    }
+
     public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {
         System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
 
