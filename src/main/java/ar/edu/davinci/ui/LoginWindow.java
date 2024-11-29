@@ -63,7 +63,7 @@ public class LoginWindow extends JFrame {
             JOptionPane.showMessageDialog(this, "Login exitoso! Bienvenido " + usuario.getNombre() + "!");
             int idUsuario = usuario.getId();
             String nombreUsuario = usuario.getNombre();
-            EntrenadorWindow entrenadorWindow = new EntrenadorWindow(idUsuario);
+            EntrenadorWindow entrenadorWindow = new EntrenadorWindow(usuario);
             entrenadorWindow.setVisible(true);
             dispose();
         }else{
@@ -72,8 +72,6 @@ public class LoginWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            LoginWindow loginWindow = new LoginWindow();
-        });
+        LoginWindow loginWindow = new LoginWindow();
     }
 }

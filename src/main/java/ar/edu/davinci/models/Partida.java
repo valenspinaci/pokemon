@@ -23,11 +23,11 @@ public class Partida {
         this.usuarios.add(usuario);
     }
 
-    public Usuario buscarRival(int idBuscando) throws SeleccionarEntrenadorException {
+    public Usuario buscarRival(Usuario usuarioBuscando) throws SeleccionarEntrenadorException {
         List<Usuario> posiblesRivales = new ArrayList<>();
 
         for (Usuario usuario : usuarios) {
-            if (usuario.getId() != idBuscando) {
+            if (usuario.getId() != usuarioBuscando.getId()) {
                 posiblesRivales.add(usuario);
             }
         }

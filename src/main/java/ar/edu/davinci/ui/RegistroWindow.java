@@ -93,8 +93,5 @@ public class RegistroWindow extends JFrame {
 
     public static void main(String[] args) {
         RegistroWindow window = new RegistroWindow();
-        SwingUtilities.invokeLater(() -> {
-            LoginWindow loginWindow = new LoginWindow();
-        });
     }
 }

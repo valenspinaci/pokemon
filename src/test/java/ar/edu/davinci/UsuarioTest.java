@@ -12,16 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UsuarioTest {
-    Usuario usuario;
-    Usuario usuario2;
-    Tipo agua;
-    Tipo fuego;
-    Tipo electrico;
-    Tipo planta;
-    Entrenador entrenador;
-    Entrenador entrenador2;
-    Entrenador entrenador3;
-    Entrenador entrenador4;
+    private Usuario usuario;
+    private Usuario usuario2;
+    private Tipo agua;
+    private Tipo fuego;
+    private Tipo electrico;
+    private Tipo planta;
+    private Entrenador entrenador;
+    private Entrenador entrenador2;
+    private Entrenador entrenador3;
+    private Entrenador entrenador4;
 
     @BeforeEach
     public void setUp() {
@@ -42,7 +42,7 @@ public class UsuarioTest {
     public void testCuandoUsuarioSumaUnEntrenadorElLargoDeLaListaPasaASer1() throws AgregarEntrenadorException {
         usuario.sumarEntrenador(entrenador);
 
-        assertEquals(1, usuario.contarEntrenadores());
+        assertEquals(1, usuario.getEntrenadores().size());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class UsuarioTest {
         usuario.sumarEntrenador(entrenador);
         usuario.sumarEntrenador(entrenador2);
 
-        assertEquals(2, usuario.contarEntrenadores());
+        assertEquals(2, usuario.getEntrenadores().size());
     }
 
     @Test

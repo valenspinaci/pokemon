@@ -2,6 +2,7 @@ package ar.edu.davinci.models;
 
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
+import ar.edu.davinci.exceptions.VidaException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +96,7 @@ public class Entrenador {
         this.pokemons = pokemons;
     }
 
-    public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException {
+    public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException, VidaException {
         System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
 
         int miIndice = 0;
@@ -103,7 +104,7 @@ public class Entrenador {
         Arbitro arbitro = new Arbitro();
 
         while (miIndice < this.cantPokemons() && suIndice < otroEntrenador.cantPokemons()) {
-            Pokemon miPokemon = this.pokemons.get(miIndice);
+            Pokemon miPokemon = this.getPokemons().get(miIndice);
             Pokemon suPokemon = otroEntrenador.getPokemons().get(suIndice);
 
             System.out.println(miPokemon.getEspecie() + " de " + this.nombre + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre());
@@ -127,8 +128,7 @@ public class Entrenador {
     public void capturarPokemon(Pokemon pokemon) throws CapturarPokemonException {
         if (pokemons.size() >= 5) {
             throw new CapturarPokemonException("No podes capturar más de 5 Pokemones");
-        }else{
-            this.pokemons.add(pokemon);
         }
+        this.pokemons.add(pokemon);
     }
 }

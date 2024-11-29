@@ -3,6 +3,7 @@ package ar.edu.davinci.models;
 import ar.edu.davinci.exceptions.AgregarEntrenadorException;
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
+import ar.edu.davinci.exceptions.VidaException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,14 +102,13 @@ public class Usuario {
     public void sumarEntrenador(Entrenador entrenador) throws AgregarEntrenadorException {
         if (entrenadores.size() >= 3) {
             throw new AgregarEntrenadorException("No podes agregar mas de 3 entrenadores");
-        }else{
-            this.entrenadores.add(entrenador);
         }
+        this.entrenadores.add(entrenador);
     };
 
     public Usuario buscarRival() throws SeleccionarEntrenadorException {
         Partida partida = new Partida();
-        return partida.buscarRival(this.getId());
+        return partida.buscarRival(this);
     }
 
     public Entrenador seleccionarEntrenador(int id){
@@ -121,7 +121,7 @@ public class Usuario {
         return entrenadorSeleccionado;
     }
 
-    public Entrenador enfrentarseA(Entrenador entrenadorUsuarioRival) throws AtaqueException, SeleccionarEntrenadorException {
+    public Entrenador enfrentarseA(Entrenador entrenadorUsuarioRival) throws AtaqueException, SeleccionarEntrenadorException, VidaException {
         return this.seleccionarEntrenador(this.getId()).enfrentarseA(entrenadorUsuarioRival);
     }
 }

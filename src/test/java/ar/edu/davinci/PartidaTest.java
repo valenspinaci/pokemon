@@ -37,7 +37,7 @@ public class PartidaTest {
     public void testCuandoHayUnSoloUsuarioElSistemaLanzaUnaExcepcion() throws SeleccionarEntrenadorException {
         partida.sumarUsuario(usuario1);
 
-        assertThrows(SeleccionarEntrenadorException.class, () -> partida.buscarRival(usuario1.getId()));
+        assertThrows(SeleccionarEntrenadorException.class, () -> partida.buscarRival(usuario1));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PartidaTest {
         partida.sumarUsuario(usuario1);
         partida.sumarUsuario(usuario2);
 
-        Usuario rival = partida.buscarRival(usuario1.getId());
+        Usuario rival = partida.buscarRival(usuario1);
 
         assertEquals(usuario2, rival);
     }

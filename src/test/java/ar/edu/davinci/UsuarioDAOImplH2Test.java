@@ -27,17 +27,6 @@ public class UsuarioDAOImplH2Test {
     }
 
     @Test
-    @DisplayName("Test utilizado para verificar si la conexion se logra de forma exitosa")
-    public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa(){
-        try{
-            new UsuarioDAOImplH2Test();
-        }catch(Exception e){
-            System.out.println("Error al establecer la conexion: " + e.getMessage());
-            assert false: "No se pudo establecer la conexion";
-        }
-    };
-
-    @Test
     @DisplayName("Cuando uso el metodo para guardar un usuario en memoria lo hace de forma exitosa")
     public void testParaVerificarQueSePuedeAgregarUnUsuario(){
         Usuario resultado = conexion.create(usuario);

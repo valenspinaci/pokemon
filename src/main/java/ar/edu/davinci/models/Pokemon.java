@@ -1,6 +1,7 @@
 package ar.edu.davinci.models;
 
 import ar.edu.davinci.exceptions.AtaqueException;
+import ar.edu.davinci.exceptions.VidaException;
 import ar.edu.davinci.models.tipos.Tipo;
 
 public class Pokemon {
@@ -99,49 +100,47 @@ public class Pokemon {
         this.idEntrenador = idEntrenador;
     }
 
-    public void atacar(Pokemon otroPokemon) throws AtaqueException {
-        if(this.getVida()<=0){
-            throw new AtaqueException(this.getEspecie() + " no puede atacar porque fue derrotado");
+    public void atacar(Pokemon otroPokemon) throws AtaqueException, VidaException {
+        if (this.getVida() <= 0F) {
+            throw new AtaqueException(this.getEspecie() + " no puede atacar porque fue derrotado.");
         }
 
-        otroPokemon.restarVida(this.tipo.danio(this, otroPokemon));
-        this.energia -= 10;
-        System.out.println(this.getEspecie() + " ataca! " + otroPokemon.getEspecie() + " queda con " + this.getVida() + " vida.");
+        System.out.println(this.getEspecie() + " ataca a " + otroPokemon.getEspecie());
+        float danio = this.tipo.danio(this, otroPokemon);
+        otroPokemon.restarVida(danio);
+        this.energia -= 10F;
+        System.out.println(otroPokemon.getEspecie() + " queda con " + otroPokemon.getVida() + " de vida.");
 
-        if(otroPokemon.getVida()<=0){
-            System.out.println(this.getEspecie() + " ha sido derrotado!");
+        if (otroPokemon.getVida() <= 0F) {
+            System.out.println(this.getEspecie() + " gana la pelea contra " + otroPokemon.getEspecie() + "!");
             return;
         }
 
-        this.restarVida(otroPokemon.tipo.danio(otroPokemon, this));
-        otroPokemon.energia -= 10;
-        System.out.println(otroPokemon.getEspecie() + " ataca! " + this.getEspecie() + " queda con " + otroPokemon.getVida() + " vida.");
+        System.out.println(otroPokemon.getEspecie() + " contraataca!");
+        float danioContraataque = otroPokemon.tipo.danio(otroPokemon, this);
+        this.restarVida(danioContraataque);
+        otroPokemon.energia -= 10F;
+        System.out.println(this.getEspecie() + " queda con " + this.getVida() + " de vida.");
 
-        if (this.getVida() <= 0) {
-            System.out.println(this.getEspecie() + " ha sido derrotado!");
+        if (this.getVida() <= 0F) {
+            System.out.println(otroPokemon.getEspecie() + " gana la pelea contra " + this.getEspecie() + "!");
+            throw new AtaqueException(this.getEspecie() + " ha sido derrotado durante el contraataque.");
         }
     }
 
-    public void restarVida(Float cantidad){
-        if (cantidad > 0) {
-            this.vida -= cantidad;
-            if (this.vida < 0) {
-                this.vida = 0F;
-            }
-        } else {
-            System.out.println("La cantidad a restar debe ser mayor que 0.");
+
+    public void restarVida(Float cantidad) throws VidaException {
+        if(cantidad <= 0F){
+            throw new VidaException("La cantidad de vida a restar debe ser mayor a cero");
         }
+        this.vida -= cantidad;
     }
 
-    public void aumentarVida(Float cantidad){
-        if (cantidad > 0) {
-            this.vida += cantidad;
-            if (this.vida > 100) {
-                this.vida = 100F;
-            }
-        } else {
-            System.out.println("La cantidad a aumentar debe ser mayor que 0");
+    public void aumentarVida(Float cantidad) throws VidaException {
+        if(cantidad <= 0F){
+            throw new VidaException("La cantidad de vida a aumentar debe ser mayor a cero");
         }
+        this.vida += cantidad;
     }
 
     public Float serAtacadoPorAgua(Pokemon atacante) {

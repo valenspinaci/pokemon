@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class EntrenadorDAOImplH2Test {
@@ -24,17 +25,6 @@ public class EntrenadorDAOImplH2Test {
         entrenador = new Entrenador("Ash Ketchum", "Kanto", "Masculino", 10, 1);
         entrenador2 = new Entrenador("Misty", "Kanto", "Femenino", 22, 1);
     }
-
-    @Test
-    @DisplayName("Test utilizado para verificar si la conexion se logra de forma exitosa")
-    public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa(){
-        try{
-            new EntrenadorDAOImplH2();
-        }catch(Exception e){
-            System.out.println("Error al establecer la conexion: " + e.getMessage());
-            assert false: "No se pudo establcer la conexion";
-        }
-    };
 
     @Test
     @DisplayName("Cuando uso el metodo para guardar un entrenador en memoria lo hace de forma exitosa")

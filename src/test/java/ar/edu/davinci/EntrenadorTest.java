@@ -2,6 +2,7 @@ package ar.edu.davinci;
 
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
+import ar.edu.davinci.exceptions.VidaException;
 import ar.edu.davinci.models.Entrenador;
 import ar.edu.davinci.models.Pokemon;
 import ar.edu.davinci.models.tipos.Tipo;
@@ -37,7 +38,7 @@ public class EntrenadorTest {
 
     @Test
     @DisplayName("Cuando un entrenador captura un pokemon que cuenta con vida 0, el largo de la lista de pokemones pasa a ser 1")
-    public void testCuandoUnEntrenadorCapturaUnPokemonLaListaPasaATenerUnLargoDeUno() throws CapturarPokemonException {
+    public void testCuandoUnEntrenadorCapturaUnPokemonLaListaPasaATenerUnLargoDeUno() throws CapturarPokemonException, VidaException {
         pokemon.restarVida(100F);
         entrenador.capturarPokemon(pokemon);
 
@@ -55,10 +56,12 @@ public class EntrenadorTest {
 
     @Test
     @DisplayName("Cuando se realiza un enfrentamiento entre dos entrenadores, la vida de sus pokemones se ve reducida")
-    public void testCuandoSeEnfrentanDosEntrenadoresSusPokemonesPierdenVida() throws AtaqueException {
-        entrenador.enfrentarseA(entrenador2);
+    public void testCuandoSeEnfrentanDosEntrenadoresSusPokemonesPierdenVida() throws AtaqueException, CapturarPokemonException {
+        entrenador.capturarPokemon(pokemon);
+        entrenador2.capturarPokemon(pokemon2);
 
-        assertTrue(pokemon.getVida() <= 100);
-        assertTrue(pokemon2.getVida() <= 100);
+        assertThrows(AtaqueException.class, () -> entrenador.enfrentarseA(entrenador2));
+        assertTrue(pokemon.getVida() < 100);
+        assertTrue(pokemon2.getVida() < 100);
     }
 }

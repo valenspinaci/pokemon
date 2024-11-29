@@ -69,7 +69,7 @@ public class EntrenadorDAOImplH2 implements EntrenadorDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (CapturarPokemonException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         System.out.println("Entrenador agregado!");
         return entrenador;

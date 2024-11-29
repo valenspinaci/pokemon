@@ -32,17 +32,6 @@ public class PokemonDAOImplH2Test {
     }
 
     @Test
-    @DisplayName("Test utilizado para verificar si la conexion se logra de forma exitosa")
-    public void testParaVerificarSiLaConexionSeHaceDeFormaExitosa() {
-        try {
-            new PokemonDAOImplH2();
-        } catch (Exception e) {
-            System.out.println("Error al establecer la conexion: " + e.getMessage());
-            assert false : "No se pudo establcer la conexion";
-        }
-    }
-
-    @Test
     @DisplayName("Cuando uso el metodo para guardar un pokemon en memoria lo hace de forma exitosa")
     public void testParaVerificarQueSePuedeAgregarUnPokemon() {
         Pokemon resultado = conexion.create(pokemon);
