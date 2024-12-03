@@ -13,6 +13,9 @@ public class Pokemon {
     private Float danio;
     private Float vida;
     private int idEntrenador;
+    private static BatallaLogger batallaLogger;
+
+    public Pokemon() {};
 
     public Pokemon(Tipo tipo, String especie, Float poder, Float energia, Float danio, int idEntrenador) {
         this.tipo = tipo;
@@ -100,29 +103,39 @@ public class Pokemon {
         this.idEntrenador = idEntrenador;
     }
 
+    public void setBatallaLogger(BatallaLogger batallaLogger) {
+        this.batallaLogger = batallaLogger;
+    }
+
     public void atacar(Pokemon otroPokemon) throws AtaqueException, VidaException {
         if (this.getVida() <= 0F) {
             throw new AtaqueException(this.getEspecie() + " no puede atacar porque fue derrotado.");
         }
 
+        batallaLogger.mostrarMensaje(this.getEspecie() + " ataca a " + otroPokemon.getEspecie());
         System.out.println(this.getEspecie() + " ataca a " + otroPokemon.getEspecie());
         float danio = this.tipo.danio(this, otroPokemon);
         otroPokemon.restarVida(danio);
         this.energia -= 10F;
+        batallaLogger.mostrarMensaje(otroPokemon.getEspecie() + " queda con " + otroPokemon.getVida() + " de vida.");
         System.out.println(otroPokemon.getEspecie() + " queda con " + otroPokemon.getVida() + " de vida.");
 
         if (otroPokemon.getVida() <= 0F) {
+            batallaLogger.mostrarMensaje(this.getEspecie() + " gana la pelea contra " + otroPokemon.getEspecie() + "!");
             System.out.println(this.getEspecie() + " gana la pelea contra " + otroPokemon.getEspecie() + "!");
             return;
         }
 
+        batallaLogger.mostrarMensaje(otroPokemon.getEspecie() + " contraataca!");
         System.out.println(otroPokemon.getEspecie() + " contraataca!");
         float danioContraataque = otroPokemon.tipo.danio(otroPokemon, this);
         this.restarVida(danioContraataque);
         otroPokemon.energia -= 10F;
+        batallaLogger.mostrarMensaje(this.getEspecie() + " queda con " + this.getVida() + " de vida.");
         System.out.println(this.getEspecie() + " queda con " + this.getVida() + " de vida.");
 
         if (this.getVida() <= 0F) {
+            batallaLogger.mostrarMensaje(otroPokemon.getEspecie() + " gana la pelea contra " + this.getEspecie() + "!");
             System.out.println(otroPokemon.getEspecie() + " gana la pelea contra " + this.getEspecie() + "!");
             throw new AtaqueException(this.getEspecie() + " ha sido derrotado durante el contraataque.");
         }

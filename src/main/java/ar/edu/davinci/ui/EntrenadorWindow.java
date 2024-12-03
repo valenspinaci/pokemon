@@ -6,9 +6,7 @@ import ar.edu.davinci.DAO.implementacion.UsuarioDAOImplH2;
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
 import ar.edu.davinci.exceptions.VidaException;
-import ar.edu.davinci.models.Entrenador;
-import ar.edu.davinci.models.Partida;
-import ar.edu.davinci.models.Usuario;
+import ar.edu.davinci.models.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,24 +16,37 @@ import java.util.Random;
 public class EntrenadorWindow extends JFrame {
     private EntrenadorDAOImplH2 entrenadorDAO;
     private UsuarioDAOImplH2 usuarioDAO;
+    private Pokemon pokemon;
     private PokemonDAOImplH2 pokemonDAO;
     private Usuario usuario;
     private JPanel panelEntrenadores;
     private JButton crearButton, eliminarButton, elegirButton, inicioButton;
     private JList<String> listaEntrenadores;
     private DefaultListModel<String> modeloLista;
+    private JTextArea areaMensajes;
+    private BatallaLogger batallaLogger;
 
-    public EntrenadorWindow(Usuario usuario){
+    public EntrenadorWindow(Usuario usuario) {
         this.usuario = usuario;
         this.entrenadorDAO = new EntrenadorDAOImplH2();
         this.usuarioDAO = new UsuarioDAOImplH2();
         this.pokemonDAO = new PokemonDAOImplH2();
 
         setTitle("Gestion de entrenadores");
-        setSize(600, 300);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        areaMensajes = new JTextArea(5, 40);
+        areaMensajes.setEditable(false);
+        areaMensajes.setBackground(new Color(245, 245, 245));
+        add(new JScrollPane(areaMensajes), BorderLayout.NORTH);
+
+        batallaLogger = new BatallaLogger(areaMensajes);
+
+        pokemon = new Pokemon();
+        pokemon.setBatallaLogger(batallaLogger);
 
         panelEntrenadores = new JPanel(new BorderLayout());
         modeloLista = new DefaultListModel<>();
@@ -43,10 +54,31 @@ public class EntrenadorWindow extends JFrame {
         panelEntrenadores.add(new JScrollPane(listaEntrenadores), BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel(new FlowLayout());
+
         crearButton = new JButton("Crear entrenador");
         eliminarButton = new JButton("Eliminar entrenador");
         elegirButton = new JButton("Elegir entrenador");
         inicioButton = new JButton("Inicio");
+
+        crearButton.setBackground(new Color(0, 123, 255));
+        crearButton.setForeground(Color.WHITE);
+        crearButton.setFocusPainted(false);
+        crearButton.setPreferredSize(new Dimension(150, 40));
+
+        eliminarButton.setBackground(new Color(0, 123, 255));
+        eliminarButton.setForeground(Color.WHITE);
+        eliminarButton.setFocusPainted(false);
+        eliminarButton.setPreferredSize(new Dimension(150, 40));
+
+        elegirButton.setBackground(new Color(0, 123, 255));
+        elegirButton.setForeground(Color.WHITE);
+        elegirButton.setFocusPainted(false);
+        elegirButton.setPreferredSize(new Dimension(150, 40));
+
+        inicioButton.setBackground(new Color(108, 117, 125));
+        inicioButton.setForeground(Color.WHITE);
+        inicioButton.setFocusPainted(false);
+        inicioButton.setPreferredSize(new Dimension(150, 40));
 
         panelBotones.add(inicioButton);
         panelBotones.add(crearButton);
@@ -62,17 +94,17 @@ public class EntrenadorWindow extends JFrame {
         setVisible(true);
     }
 
-    private void actualizarListaEntrenadores(){
+    private void actualizarListaEntrenadores() {
         modeloLista.clear();
         List<Entrenador> entrenadores = entrenadorDAO.getEntrenadoresByUsuario(usuario.getId());
 
-        if(entrenadores.isEmpty()){
+        if (entrenadores.isEmpty()) {
             modeloLista.addElement("No hay entrenadores disponibles");
             listaEntrenadores.setEnabled(false);
             eliminarButton.setEnabled(false);
             elegirButton.setEnabled(false);
-        }else{
-            for(Entrenador entrenador : entrenadores){
+        } else {
+            for (Entrenador entrenador : entrenadores) {
                 modeloLista.addElement(entrenador.getId() + " - " + entrenador.getNombre() + " - " + entrenador.getNacionalidad() + " - " + entrenador.getEdad() + " años - Pokemones: " + pokemonDAO.getPokemonesByEntrenador(entrenador.getId()).size());
             }
             listaEntrenadores.setEnabled(true);
@@ -80,9 +112,9 @@ public class EntrenadorWindow extends JFrame {
             elegirButton.setEnabled(true);
         }
 
-        if(entrenadores.size() == 3){
+        if (entrenadores.size() == 3) {
             crearButton.setEnabled(false);
-        }else{
+        } else {
             crearButton.setEnabled(true);
         }
     }
@@ -139,18 +171,18 @@ public class EntrenadorWindow extends JFrame {
 
                 try {
                     Entrenador entrenadorRival = elegirRivalAleatorio();
-                    System.out.println(entrenadorElegido.cantPokemons());
-                    System.out.println(entrenadorRival.cantPokemons());
                     Entrenador ganador = entrenadorElegido.enfrentarseA(entrenadorRival);
-                    mostrarResultadoBatalla(ganador);
+                    String mensaje = ganador != null ? "¡El ganador es " + ganador.getNombre() + "!" : "¡La batalla terminó en empate!";
+                    areaMensajes.append(mensaje);
 
-                    this.dispose();
+                    panelEntrenadores.setEnabled(false);
+
+                    Timer timer = new Timer(3000, event -> this.dispose());
+                    timer.setRepeats(false);
+                    timer.start();
+
                 } catch (SeleccionarEntrenadorException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                } catch (AtaqueException ex) {
-                    JOptionPane.showMessageDialog(this, "Hubo un problema durante la batalla: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                } catch (VidaException ex) {
-                    ex.printStackTrace();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Seleccione un entrenador para la batalla.");
@@ -158,12 +190,9 @@ public class EntrenadorWindow extends JFrame {
         });
     }
 
-
     private Entrenador elegirRivalAleatorio() throws SeleccionarEntrenadorException {
         Partida partida = new Partida();
         Usuario usuarioRival = partida.buscarRival(usuario);
-        System.out.println("Nickanme usuario rival: " + usuarioRival.getNickname());
-        System.out.println("Entrenadores usuario rival: " + entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).size());
 
         if (entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).isEmpty()) {
             throw new SeleccionarEntrenadorException("No hay entrenadores disponibles");
@@ -172,11 +201,5 @@ public class EntrenadorWindow extends JFrame {
         Random random = new Random();
         int index = random.nextInt(entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).size());
         return entrenadorDAO.getEntrenadoresByUsuario(usuarioRival.getId()).get(index);
-    }
-
-    private void mostrarResultadoBatalla(Entrenador ganador) {
-        String mensaje = ganador != null ? "¡El ganador es " + ganador.getNombre() + "!" : "¡La batalla terminó en empate!";
-
-        JOptionPane.showMessageDialog(this, mensaje);
     }
 }

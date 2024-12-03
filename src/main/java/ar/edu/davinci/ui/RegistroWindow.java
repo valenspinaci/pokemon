@@ -5,6 +5,7 @@ import ar.edu.davinci.models.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class RegistroWindow extends JFrame {
     private JTextField nameField, lastnameField, emailField, nicknameField, phoneField;
@@ -12,13 +13,18 @@ public class RegistroWindow extends JFrame {
     private JButton registerButton, loginButton;
     private UsuarioDAOImplH2 usuarioDAO;
 
-    public RegistroWindow(){
+    public RegistroWindow() {
         usuarioDAO = new UsuarioDAOImplH2();
 
         setTitle("Registro de usuario");
-        setSize(300, 300);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         nameField = new JTextField(20);
         lastnameField = new JTextField(20);
@@ -26,40 +32,57 @@ public class RegistroWindow extends JFrame {
         nicknameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         phoneField = new JTextField(20);
+
         registerButton = new JButton("Registrarse");
         loginButton = new JButton("Login");
 
-        setLayout(new GridLayout(7, 2, 10, 10));
-        add(new JLabel("Nombre:"));
-        add(nameField);
-        add(new JLabel("Apellido:"));
-        add(lastnameField);
-        add(new JLabel("Email:"));
-        add(emailField);
-        add(new JLabel("Nickname:"));
-        add(nicknameField);
-        add(new JLabel("Contraseña:"));
-        add(passwordField);
-        add(new JLabel("Telefono:"));
-        add(phoneField);
-        add(registerButton);
-        add(loginButton);
+        registerButton.setBackground(new Color(0, 123, 255));
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setFocusPainted(false);
+        registerButton.setPreferredSize(new Dimension(150, 40));
 
-        registerButton.addActionListener(e -> {
-            registrarUsuario();
-        });
+        loginButton.setBackground(new Color(108, 117, 125));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFocusPainted(false);
+        loginButton.setPreferredSize(new Dimension(150, 40));
+
+        panel.add(createLabeledField("Nombre:", nameField));
+        panel.add(createLabeledField("Apellido:", lastnameField));
+        panel.add(createLabeledField("Email:", emailField));
+        panel.add(createLabeledField("Nickname:", nicknameField));
+        panel.add(createLabeledField("Contraseña:", passwordField));
+        panel.add(createLabeledField("Telefono:", phoneField));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        buttonPanel.add(registerButton);
+        buttonPanel.add(loginButton);
+        panel.add(buttonPanel);
+
+        add(panel);
+
+        registerButton.addActionListener(e -> registrarUsuario());
 
         loginButton.addActionListener(e -> {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.setVisible(true);
-
             dispose();
         });
 
         setVisible(true);
     }
 
-    private void registrarUsuario(){
+    private JPanel createLabeledField(String labelText, JComponent field) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JLabel label = new JLabel(labelText);
+        label.setPreferredSize(new Dimension(100, 30));
+        panel.add(label);
+        panel.add(field);
+        return panel;
+    }
+
+    private void registrarUsuario() {
         String nombre = nameField.getText();
         String apellido = lastnameField.getText();
         String email = emailField.getText();
@@ -73,25 +96,26 @@ public class RegistroWindow extends JFrame {
         }
 
         int telefonoInt;
-        try{
+        try {
             telefonoInt = Integer.parseInt(telefono);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El telefono debe ser un numero valido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        Usuario nuevoUsuario = new Usuario(email, nombre, apellido, nickname, contrasena,telefonoInt);
+        Usuario nuevoUsuario = new Usuario(email, nombre, apellido, nickname, contrasena, telefonoInt);
         Usuario usuarioCreado = usuarioDAO.create(nuevoUsuario);
-        System.out.println(usuarioCreado.getNickname() + usuarioCreado.getContrasena() + usuarioCreado.getId());
 
-        if(usuarioCreado != null){
+        if (usuarioCreado != null) {
             JOptionPane.showMessageDialog(this, "Usuario registrado!", "Exito!", JOptionPane.INFORMATION_MESSAGE);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Hubo un error!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void main(String[] args) {
-        RegistroWindow window = new RegistroWindow();
+        SwingUtilities.invokeLater(() -> {
+            new RegistroWindow();
+        });
     }
 }
