@@ -95,6 +95,16 @@ public class RegistroWindow extends JFrame {
             return;
         }
 
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) { // Expresión regular para validar email
+            JOptionPane.showMessageDialog(this, "El correo electrónico no es válido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (telefono.length() < 7 || telefono.length() > 15) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe tener entre 7 y 15 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int telefonoInt;
         try {
             telefonoInt = Integer.parseInt(telefono);

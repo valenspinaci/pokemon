@@ -1,6 +1,8 @@
 package ar.edu.davinci.ui;
 
+import ar.edu.davinci.DAO.implementacion.EntrenadorDAOImplH2;
 import ar.edu.davinci.DAO.implementacion.UsuarioDAOImplH2;
+import ar.edu.davinci.models.Entrenador;
 import ar.edu.davinci.models.Usuario;
 
 import javax.swing.*;
@@ -12,9 +14,11 @@ public class LoginWindow extends JFrame {
     private JButton loginButton, registerButton;
 
     private UsuarioDAOImplH2 usuarioDAO;
+    private EntrenadorDAOImplH2 entrenadorDAO;
 
     public LoginWindow() {
         usuarioDAO = new UsuarioDAOImplH2();
+        entrenadorDAO = new EntrenadorDAOImplH2();
 
         setTitle("Login");
         setSize(400, 300);
@@ -86,12 +90,29 @@ public class LoginWindow extends JFrame {
         Usuario usuario = usuarioDAO.validateUser(nickname, password);
 
         if (usuario != null) {
-            JOptionPane.showMessageDialog(this, "Login exitoso! Bienvenido " + usuario.getNombre() + "!");
+            JOptionPane.showMessageDialog(this, "Login exitoso! Bienvenido " + usuario.getNombre().substring(0,1).toUpperCase() + usuario.getNombre().substring(1).toLowerCase() + "!");
+            crearUsuariosGenericos();
             EntrenadorWindow entrenadorWindow = new EntrenadorWindow(usuario);
             entrenadorWindow.setVisible(true);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Nickname o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void crearUsuariosGenericos(){
+        if(usuarioDAO.getAll().size() == 1){
+            Usuario usuario1 = new Usuario("user1@gmail.com", "user1", "user1", "user1", "user1", 1100000000);
+            Usuario usuario2 = new Usuario("user2@gmail.com", "user2", "user2", "user2", "user2", 1100000000);
+            usuario1.setId(2);
+            usuario2.setId(3);
+            usuarioDAO.create(usuario1);
+            usuarioDAO.create(usuario2);
+
+            Entrenador entrenadorUsuario1 = new Entrenador("Ash", "Kanto", "M", 13, 2);
+            Entrenador entrenadorUsuario2 = new Entrenador("Misty", "Kanto", "F", 14, 3);
+            entrenadorDAO.create(entrenadorUsuario1);
+            entrenadorDAO.create(entrenadorUsuario2);
         }
     }
 

@@ -15,6 +15,9 @@ public class Entrenador {
     private int edad;
     private int idUsuario;
     private List<Pokemon> pokemons;
+    private static BatallaLogger batallaLogger;
+
+    public Entrenador(){};
 
     public Entrenador(String nombre, String nacionalidad, String genero, int edad, int idUsuario) {
         this.nombre = nombre;
@@ -96,8 +99,13 @@ public class Entrenador {
         this.pokemons = pokemons;
     }
 
+    public void setBatallaLogger(BatallaLogger batallaLogger) {
+        this.batallaLogger = batallaLogger;
+    }
+
     public Entrenador enfrentarseA(Entrenador otroEntrenador) throws AtaqueException, VidaException {
-        System.out.println(this.nombre + " se enfrenta a " + otroEntrenador.getNombre());
+        batallaLogger.mostrarMensaje(this.nombre.substring(0, 1).toUpperCase() + this.nombre.substring(1).toLowerCase() + " se enfrenta a " + otroEntrenador.getNombre().substring(0, 1).toUpperCase() + otroEntrenador.getNombre().substring(1).toLowerCase());
+        System.out.println(this.nombre.substring(0, 1).toUpperCase() + this.nombre.substring(1).toLowerCase() + " se enfrenta a " + otroEntrenador.getNombre().substring(0, 1).toUpperCase() + otroEntrenador.getNombre().substring(1).toLowerCase());
 
         int miIndice = 0;
         int suIndice = 0;
@@ -107,10 +115,16 @@ public class Entrenador {
             Pokemon miPokemon = this.getPokemons().get(miIndice);
             Pokemon suPokemon = otroEntrenador.getPokemons().get(suIndice);
 
-            System.out.println(miPokemon.getEspecie() + " de " + this.nombre + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre());
+            batallaLogger.mostrarMensaje(miPokemon.getEspecie() + " de " + this.nombre.substring(0, 1).toUpperCase() + this.nombre.substring(1).toLowerCase() + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre().substring(0, 1).toUpperCase() + otroEntrenador.getNombre().substring(1).toLowerCase());
+            System.out.println(miPokemon.getEspecie() + " de " + this.nombre.substring(0, 1).toUpperCase() + this.nombre.substring(1).toLowerCase() + " enfrenta a " + suPokemon.getEspecie() + " de " + otroEntrenador.getNombre().substring(0, 1).toUpperCase() + otroEntrenador.getNombre().substring(1).toLowerCase());
 
             while (miPokemon.getVida() > 0 && suPokemon.getVida() > 0) {
-                miPokemon.atacar(suPokemon);
+                try{
+                    miPokemon.atacar(suPokemon);
+                }catch (AtaqueException | VidaException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             if (miPokemon.getVida() <= 0) {
@@ -122,7 +136,11 @@ public class Entrenador {
             }
         }
 
-        return arbitro.verificarGanador(this, otroEntrenador, miIndice);
+        Entrenador ganador = arbitro.verificarGanador(this, otroEntrenador, miIndice);
+
+        batallaLogger.mostrarMensaje("¡El ganador es " + ganador.getNombre().substring(0, 1).toUpperCase() + ganador.getNombre().substring(1).toLowerCase() + "!");
+
+        return ganador;
     }
 
     public void capturarPokemon(Pokemon pokemon) throws CapturarPokemonException {
