@@ -1,4 +1,4 @@
-package ar.edu.davinci.models;
+package ar.edu.davinci.ui.utils;
 
 import javax.swing.*;
 

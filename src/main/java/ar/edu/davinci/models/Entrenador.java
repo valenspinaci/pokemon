@@ -3,6 +3,7 @@ package ar.edu.davinci.models;
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.CapturarPokemonException;
 import ar.edu.davinci.exceptions.VidaException;
+import ar.edu.davinci.ui.utils.BatallaLogger;
 
 import java.util.ArrayList;
 import java.util.List;

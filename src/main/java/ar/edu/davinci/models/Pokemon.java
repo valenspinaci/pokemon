@@ -3,6 +3,7 @@ package ar.edu.davinci.models;
 import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.VidaException;
 import ar.edu.davinci.models.tipos.Tipo;
+import ar.edu.davinci.ui.utils.BatallaLogger;
 
 public class Pokemon {
     private int id;

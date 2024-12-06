@@ -3,10 +3,9 @@ package ar.edu.davinci.ui;
 import ar.edu.davinci.DAO.implementacion.EntrenadorDAOImplH2;
 import ar.edu.davinci.DAO.implementacion.PokemonDAOImplH2;
 import ar.edu.davinci.DAO.implementacion.UsuarioDAOImplH2;
-import ar.edu.davinci.exceptions.AtaqueException;
 import ar.edu.davinci.exceptions.SeleccionarEntrenadorException;
-import ar.edu.davinci.exceptions.VidaException;
 import ar.edu.davinci.models.*;
+import ar.edu.davinci.ui.utils.BatallaLogger;
 
 import javax.swing.*;
 import java.awt.*;
